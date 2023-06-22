@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true" name="E:/JavaProject/RestAssured-Employee">
+        <classes>
+            <class name="Tests.CreateEmployee">
+                <methods>
+                    <include name="addEmployee"/>
+                    <include name="addEmployee_builder"/>
+                    <include name="createEmployeeBirthDateNull"/>
+                    <include name="createEmployeeEmploymentDateNull"/>
+                    <include name="createEmployeeWorkFormatIdNull_BUG"/>
+                    <include name="createEmployeeAddressNull"/>
+                    <include name="createEmployeeAddress1001Symbols"/>
+                    <include name="createEmployeeAddress1000Symbols"/>
+                </methods>
+            </class>
+            <class name="Tests.POST.CreateEmployeeNameTests">
+                <methods>
+                    <include name="createEmployeeNameNull"/>
+                    <include name="createEmployeeSurnameNull"/>
+                    <include name="createEmployeeMiddleNameNull"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

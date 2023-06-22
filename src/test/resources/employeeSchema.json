@@ -1,0 +1,160 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "name": {
+      "type": "string"
+    },
+    "surname": {
+      "type": "string"
+    },
+    "middleName": {
+      "type": "string"
+    },
+    "birthDate": {
+      "type": "string"
+    },
+    "employmentDate": {
+      "type": "string"
+    },
+    "comment": {
+      "type": "string"
+    },
+    "fullAddress": {
+      "type": "string"
+    },
+    "workFormat": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "value"
+      ]
+    },
+    "position": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "value"
+      ]
+    },
+    "curriculumVitaeId": {
+      "type": "integer"
+    },
+    "grade": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "value"
+      ]
+    },
+    "employeeStatus": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "employeeStatus": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "employeeStatus"
+      ]
+    },
+    "location": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "region": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "region",
+        "city"
+      ]
+    },
+    "mainDepartment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    "employmentType": {
+      "type": "object",
+      "properties": {
+        "employmentTypeId": {
+          "type": "integer"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "employmentTypeId",
+        "value"
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "surname",
+    "middleName",
+    "birthDate",
+    "employmentDate",
+    "comment",
+    "fullAddress",
+    "workFormat",
+    "position",
+    "curriculumVitaeId",
+    "grade",
+    "employeeStatus",
+    "location",
+    "mainDepartment",
+    "employmentType"
+  ]
+}
