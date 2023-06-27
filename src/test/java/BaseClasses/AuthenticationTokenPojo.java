@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AuthenticationToken {
+public class AuthenticationTokenPojo {
     private String access_token;
     private Integer expires_in;
     private Integer refresh_expires_in;
@@ -17,11 +17,11 @@ public class AuthenticationToken {
     private String session_state;
     private String scope;
 
-    public AuthenticationToken() {
+    public AuthenticationTokenPojo() {
         super();
     }
 
-    public AuthenticationToken(String access_token, Integer expires_in, Integer refresh_expires_in, String refresh_token, String token_type, Integer not_before_policy, String session_state, String scope) {
+    public AuthenticationTokenPojo(String access_token, Integer expires_in, Integer refresh_expires_in, String refresh_token, String token_type, Integer not_before_policy, String session_state, String scope) {
         this.access_token = access_token;
         this.expires_in = expires_in;
         this.refresh_expires_in = refresh_expires_in;

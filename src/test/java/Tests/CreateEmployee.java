@@ -29,7 +29,7 @@ public class CreateEmployee extends Specifications {
        CreateNewEmployeeRequest bodyResponse = CreateNewEmployeeRequest.createEmployee("Test", "Test", "Test", "26.08.1984", "03.03.2023", "", "http://ava.jpg", "Its me", "Crimea, Yalta, 298600", 1, 2, 2, 2,3,2,2,2,3);
 
         CreateNewEmployeeResponse createdEmployee = given()
-                .header("Authorization", "Bearer "+token)
+                .header("Authorization", "Bearer "+ Specifications.token)
                 .body(bodyResponse)
                 .when()
                 .post(URL + "/employee")
@@ -67,7 +67,7 @@ public class CreateEmployee extends Specifications {
                 .locationId(2)
                 .mainDepartmentId(2).build();
 
-        String name = response.createEmployeeSuccess(URL, token, requestBody).getName();
+        String name = response.createEmployeeSuccess(URL, Specifications.token, requestBody).getName();
         System.out.println("Создан: " + name);
         //  Assert.assertEquals(errorText,"Поле fullAddress: если поле не null, то должно быть не пустым");
 
@@ -88,7 +88,7 @@ public class CreateEmployee extends Specifications {
                 "01.02.2015", "Http://url_avatar.jpg", "Some comment about", "Russia, Yalta", 1,
                 2, 2,3,1,3,2,1,
                 2);
-        String errorText = error.createEmployeeError(URL, token, requestBody).getDescription();
+        String errorText = error.createEmployeeError(URL, Specifications.token, requestBody).getDescription();
         System.out.println("Текст ошибки: " + errorText);
         Assert.assertEquals(errorText,"Ошбика добавления или обновления записи в бд");
     }
@@ -105,7 +105,7 @@ public class CreateEmployee extends Specifications {
                 "", "Http://url_avatar.jpg", "Its me", "Russia, Yalta", 1,
                 2, 2,1,1,2,2,1,
                 2);
-        String errorText = error.createEmployeeError(URL, token, requestBody).getDescription();
+        String errorText = error.createEmployeeError(URL, Specifications.token, requestBody).getDescription();
         System.out.println("Текст ошибки: " + errorText);
         Assert.assertEquals(errorText,"Ошбика добавления или обновления записи в бд");
     }
@@ -124,7 +124,7 @@ public class CreateEmployee extends Specifications {
                 2, 2,1, 1,2,2,1,
                 2);
 
-        String errorText = error.createEmployeeErrorList(URL, token, requestBody).get(0).getDescription();
+        String errorText = error.createEmployeeErrorList(URL, Specifications.token, requestBody).get(0).getDescription();
         System.out.println("Текст ошибки: " + errorText);
         Assert.assertEquals(errorText,"Поле workFormatId: must be greater than 0");
     }
@@ -156,7 +156,7 @@ public class CreateEmployee extends Specifications {
                 .locationId(2)
                 .mainDepartmentId(2).build();
 
-        String errorText = error.createEmployeeErrorList(URL, token, requestBody).get(0).getDescription();
+        String errorText = error.createEmployeeErrorList(URL, Specifications.token, requestBody).get(0).getDescription();
         System.out.println("Текст ошибки: " + errorText);
         Assert.assertEquals(errorText,"Поле fullAddress: если поле не null, то должно быть не пустым");
     }
@@ -185,7 +185,7 @@ public class CreateEmployee extends Specifications {
                 .locationId(2)
                 .mainDepartmentId(2).build();
 
-        String errorText = error.createEmployeeError(URL, token, requestBody).getDetails();
+        String errorText = error.createEmployeeError(URL, Specifications.token, requestBody).getDetails();
         System.out.println("Текст ошибки: " + errorText);
         Assert.assertEquals(errorText,"ERROR: value too long for type character varying(1000)");
     }
@@ -216,7 +216,7 @@ public class CreateEmployee extends Specifications {
                 .locationId(2)
                 .mainDepartmentId(2).build();
 
-        String errorText = response.createEmployeeSuccess(URL, token, requestBody).getFullAddress();
+        String errorText = response.createEmployeeSuccess(URL, Specifications.token, requestBody).getFullAddress();
         System.out.println("Текст ошибки: " + errorText);
         Assert.assertEquals(errorText,address);
     }
@@ -229,7 +229,7 @@ public class CreateEmployee extends Specifications {
         // ПОлучение всех карточек сотрудников
         Integer count = 0;
         installSpecification(requestSpec(URL), specResponseOK200());
-        Root list = given().header("Authorization", "Bearer "+token)
+        Root list = given().header("Authorization", "Bearer "+ Specifications.token)
                 .when()
                 .get(URL + "/employee")
                 .then()

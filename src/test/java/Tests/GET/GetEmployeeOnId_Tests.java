@@ -11,6 +11,7 @@ import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
+
 public class GetEmployeeOnId_Tests extends Specifications {
 
     /**
@@ -20,7 +21,7 @@ public class GetEmployeeOnId_Tests extends Specifications {
     public void getEmployeeOnID_Exist(){
         installSpecification(requestSpec(URL), specResponseOK200());
         Root response =given()
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + Specifications.token)
                 .param("id","2")
                 .when()
                 .get(URL + "/employee/filter")
@@ -39,11 +40,11 @@ public class GetEmployeeOnId_Tests extends Specifications {
     public void getEmployeeOnID_notExist(){
         installSpecification(requestSpec(URL), specResponseOK200());
         Total response =given()
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + Specifications.token)
                 .param("id","2122546")
                 .when()
                 .get(URL + "/employee/filter")
-                .then()//.log().all()
+                .then().log().all()
                 .extract().body().as(Total.class);
 
         //  response.getContent().stream().forEach(x -> Assert.assertTrue(x.get().contains(x.getId().toString())));
@@ -57,7 +58,7 @@ public class GetEmployeeOnId_Tests extends Specifications {
     public void getEmployeeOnID_0(){
         installSpecification(requestSpec(URL), specResponseError400());
         List<ErrorResponse> error =given()
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + Specifications.token)
                 .param("id","0")
                 .when()
                 .get(URL + "/employee/filter")
@@ -74,7 +75,7 @@ public class GetEmployeeOnId_Tests extends Specifications {
     public void getEmployeeOnID_String(){
         installSpecification(requestSpec(URL), specResponseError400());
         List<ErrorResponse> error =given()
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + Specifications.token)
                 .param("id","Text")
                 .when()
                 .get(URL + "/employee/filter")

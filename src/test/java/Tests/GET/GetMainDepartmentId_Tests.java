@@ -12,6 +12,7 @@ import static io.restassured.RestAssured.given;
 
 public class GetMainDepartmentId_Tests extends Specifications {
 
+
     /**
      * Получение сотрудников по ID департамента - mainDepartmentId = 2
      */
@@ -19,7 +20,7 @@ public class GetMainDepartmentId_Tests extends Specifications {
     public void getEmployeeListOnMainDepartmentId(){
         installSpecification(requestSpec(URL), specResponseOK200());
         Root response =given()
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + Specifications.token)
                 .param("mainDepartmentId","2")
                 .when()
                 .get(URL + "/employee/filter")
@@ -36,7 +37,7 @@ public class GetMainDepartmentId_Tests extends Specifications {
     public void getEmployeeListOnMainDepartmentId_0(){
         installSpecification(requestSpec(URL), specResponseError400());
         List<ErrorResponse> error =given()
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + Specifications.token)
                 .param("mainDepartmentId","0")
                 .when()
                 .get(URL + "/employee/filter")
@@ -53,7 +54,7 @@ public class GetMainDepartmentId_Tests extends Specifications {
     public void getEmployeeListOnMainDepartmentId_String(){
         installSpecification(requestSpec(URL), specResponseError400());
         List<ErrorResponse> error = given()
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + Specifications.token)
                 .param("mainDepartmentId","text")
                 .when()
                 .get(URL + "/employee/filter")

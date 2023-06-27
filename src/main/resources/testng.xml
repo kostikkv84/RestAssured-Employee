@@ -51,6 +51,12 @@
                     <include name="createEmployeeMiddleNameNull"/>
                 </methods>
             </class>
+            <class name="Tests.GET.GetEmployeeStatus_Tests">
+                <methods>
+                    <include name="getAllEmployeeStatusTypes"/>
+                    <include name="getEmployeeOnID_Exist"/>
+                </methods>
+            </class>
         </classes>
     </test>
 </suite>

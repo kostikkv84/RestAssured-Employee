@@ -1,5 +1,8 @@
 package spec;
 
+import PojoClasses.GetEmployeeResponsePOJO.Content;
+import PojoClasses.GetEmployeeResponsePOJO.Root;
+import groovy.lang.GString;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -11,16 +14,22 @@ import io.restassured.specification.ResponseSpecification;
 import org.apache.commons.lang.RandomStringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.basic;
 import static io.restassured.RestAssured.given;
 
 public class Specifications {
-    public String token = "";
-    public String tokenUser = "";
+    public static String token = "";
+    public static String tokenUser = "";
 
     public Integer vacationTypeID = 0;
 
@@ -107,12 +116,13 @@ public class Specifications {
     public void setFilter() {
         RestAssured.filters(new AllureRestAssured());
     }
+
     /**
      * Получение токена Admin перед выполнением тестов
      * @throws JSONException
      */
-    @BeforeTest
-    public void AuthWithAdmin() throws JSONException {
+    @BeforeSuite
+    public static void AuthWithAdmin() throws JSONException {
         Response response =
                 (Response) given()
                         .auth().preemptive().basic("core", "d11e83a3-95cc-460c-9289-511d36d3e3fb")
@@ -131,7 +141,7 @@ public class Specifications {
         System.out.println("Oauth Token with type " + tokenType + "   " + accessToken);
         token = accessToken;
     }
-    @BeforeTest
+    @BeforeSuite
     public void AuthWithUser() throws JSONException {
         Response response =
                 (Response) given()
@@ -152,5 +162,66 @@ public class Specifications {
         tokenUser = accessToken;
     }
 
+    @AfterMethod
+    public void timeTestResult(ITestResult result){
+        long a = result.getEndMillis()-result.getStartMillis();
+        System.out.println("Время, затраченное на выполнение теста:"+a+" миллисекунды");
+    }
+
+    public static void deleteEmployee(String url){
+        // ПОлучение всех карточек сотрудников
+        Integer count = 0;
+        installSpecification(requestSpec(url), specResponseOK200());
+        Root list = given().header("Authorization", "Bearer "+token)
+                .when()
+                .get(url + "/employee")
+                .then()
+                //.log().all()
+                .extract().body().as(Root.class);
+        System.out.println(list.getContent().size());
+
+        // Создаем список ID карточек сотрудников
+        List<Integer> listID = list.getContent().stream().map(Content::getId).collect(Collectors.toList());
+        List<Integer> listToDelete = new ArrayList<>();
+
+        // для безопасности, создадим отдельный список с ID на удаление сотрудников. Где ID больше 320
+        for (int i=0;i<listID.size();i++) {
+            if (listID.get(i)>320) {
+                listToDelete.add(listID.get(i));
+            }
+            //    System.out.println(listToDelete);
+        }
+
+        // List<Integer> listToDelete = listID.get().stream().forEach(x -> listID.stream().collect(Collectors.toList());
+        //--- удаляем по списку из списка на удаление.
+
+        for (int i=0;i<listToDelete.size();i++){
+            installSpecification(requestSpec(url), specResponseOK204());
+
+            given()
+                    .header("Content-type", "application/json")
+                    .header("Authorization", "Bearer "+token)
+                    .when()
+                    .delete(url+"/employee/" + listToDelete.get(i))
+                    .then()
+                    .extract().response();
+            System.out.println("Удален: " + listToDelete.get(i));
+
+        }
+
+
+        // проверяем количество записей, что их 6
+    /*    installSpecification(requestSpec(URL), specResponseOK200());
+        List<VacationType> listAfterDelete = given().header("Authorization", "Bearer "+token)
+                .when()
+                .get(URL + "/vacationType")
+                .then()
+                //.then().log().all()
+                .extract().jsonPath().getList("",VacationType.class);
+        List<Integer> idTypesAfterDelete = list.stream().map(VacationType::getId).collect(Collectors.toList());
+        System.out.println("ID отпусков после удаления: " + idTypesAfterDelete);
+        Assert.assertEquals(listAfterDelete.size(),6);
+*/
+    }
 
 }

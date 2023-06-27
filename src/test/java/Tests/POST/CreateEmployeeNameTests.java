@@ -7,6 +7,7 @@ import PojoClasses.ErrorEmployeePOJO.ErrorResponse;
 import PojoClasses.GetEmployeeResponsePOJO.Root;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.Test;
 import spec.Specifications;
 
@@ -110,60 +111,8 @@ public class CreateEmployeeNameTests extends Specifications {
     //------------------------------------------
     @AfterClass
     //@Test
-    public void deleteEmployee() {
-        // ПОлучение всех карточек сотрудников
-        Integer count = 0;
-        installSpecification(requestSpec(URL), specResponseOK200());
-        Root list = given().header("Authorization", "Bearer "+token)
-                .when()
-                .get(URL + "/employee")
-                .then()
-                //.log().all()
-                .extract().body().as(Root.class);
-        System.out.println(list.getContent().size());
-
-        // Создаем список ID карточек сотрудников
-        List<Integer> listID = list.getContent().stream().map(Content::getId).collect(Collectors.toList());
-        List<Integer> listToDelete = new ArrayList<>();
-
-        // для безопасности, создадим отдельный список с ID на удаление сотрудников. Где ID больше 320
-        for (int i=0;i<listID.size();i++) {
-            if (listID.get(i)>320) {
-                listToDelete.add(listID.get(i));
-            }
-            //    System.out.println(listToDelete);
-        }
-
-        // List<Integer> listToDelete = listID.get().stream().forEach(x -> listID.stream().collect(Collectors.toList());
-        //--- удаляем по списку из списка на удаление.
-
-        for (int i=0;i<listToDelete.size();i++){
-            installSpecification(requestSpec(URL), specResponseOK204());
-
-            given()
-                    .header("Content-type", "application/json")
-                    .header("Authorization", "Bearer "+token)
-                    .when()
-                    .delete(URL+"/employee/" + listToDelete.get(i))
-                    .then()
-                    .extract().response();
-            System.out.println("Удален: " + listToDelete.get(i));
-
-        }
-
-
-        // проверяем количество записей, что их 6
-    /*    installSpecification(requestSpec(URL), specResponseOK200());
-        List<VacationType> listAfterDelete = given().header("Authorization", "Bearer "+token)
-                .when()
-                .get(URL + "/vacationType")
-                .then()
-                //.then().log().all()
-                .extract().jsonPath().getList("",VacationType.class);
-        List<Integer> idTypesAfterDelete = list.stream().map(VacationType::getId).collect(Collectors.toList());
-        System.out.println("ID отпусков после удаления: " + idTypesAfterDelete);
-        Assert.assertEquals(listAfterDelete.size(),6);
-*/
+    public void deleteEmployeeAfterTests() {
+        Specifications.deleteEmployee(URL);
     }
 
 }

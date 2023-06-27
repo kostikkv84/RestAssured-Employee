@@ -16,7 +16,6 @@ import static io.restassured.RestAssured.given;
 
 public class GetEmployee extends Specifications {
 
-
     /**
      * Получение списка всех сотрудников, auth Админ
      */
@@ -25,7 +24,7 @@ public class GetEmployee extends Specifications {
         installSpecification(requestSpec(URL), specResponseOK200());
         SoftAssert softAssert = new SoftAssert();
         Root employeers = given()
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + Specifications.token)
                 .when()
                 .get(URL + "/employee")
                 .then()
@@ -48,7 +47,7 @@ public class GetEmployee extends Specifications {
     public void getAllEmployeeUser(){
          installSpecification(requestSpec(URL), specResponseError403());
         given()
-                .header("Authorization", "Bearer " + tokenUser)
+                .header("Authorization", "Bearer " + Specifications.tokenUser)
                 .when()
                 .get(URL + "/employee")
                 .then().log().all();
@@ -60,7 +59,7 @@ public class GetEmployee extends Specifications {
     @Test
     public void getEmployeeCheckJsonSchema() {
         installSpecification(requestSpec(URL), specResponseOK200());
-        RestAssured.given().header("Authorization", "Bearer " + token)
+        RestAssured.given().header("Authorization", "Bearer " + Specifications.token)
                 .when()
                 .get(URL + "/employee/2")
                 .then().log().all()
@@ -76,7 +75,7 @@ public class GetEmployee extends Specifications {
     public void getAllEmployeeSizeTest(){
         installSpecification(requestSpec(URL), specResponseOK200());
         Root employeers =given()
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + Specifications.token)
                 .param("size","5")
                 .when()
                 .get(URL + "/employee")
@@ -93,7 +92,7 @@ public class GetEmployee extends Specifications {
     public void getAllEmployeeSize0(){
         installSpecification(requestSpec(URL), specResponseError400());
         List<ErrorResponse> error =given()
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + Specifications.token)
                 .param("size","0")
                 .when()
                 .get(URL + "/employee")
@@ -109,7 +108,7 @@ public class GetEmployee extends Specifications {
     public void getAllEmployeeSize1(){
         installSpecification(requestSpec(URL), specResponseOK200());
         Root response =given()
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + Specifications.token)
                 .param("size","1")
                 .when()
                 .get(URL + "/employee")
@@ -126,7 +125,7 @@ public class GetEmployee extends Specifications {
     public void getAllEmployeeSize500(){
         installSpecification(requestSpec(URL), specResponseOK200());
         Root response =given()
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + Specifications.token)
                 .param("size","500")
                 .when()
                 .get(URL + "/employee")
@@ -144,7 +143,7 @@ public class GetEmployee extends Specifications {
     public void getAllEmployeeSize501(){
         installSpecification(requestSpec(URL), specResponseError400());
         List<ErrorResponse> error =given()
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + Specifications.token)
                 .param("size","501")
                 .when()
                 .get(URL + "/employee")
@@ -162,7 +161,7 @@ public class GetEmployee extends Specifications {
     public void getAllEmployeePageTest(){
         installSpecification(requestSpec(URL), specResponseOK200());
         Root employeers =given()
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + Specifications.token)
                 .param("size","5")
                 .param("page","1")
                 .when()

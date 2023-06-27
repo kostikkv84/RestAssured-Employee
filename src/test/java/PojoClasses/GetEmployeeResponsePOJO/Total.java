@@ -6,12 +6,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Total {
-    private String total;
+    private Integer total;
 
     public Total() {super();
     }
 
-    public Total(String total) {
+    public Total(Integer total) {
         this.total = total;
     }
 }
