@@ -168,7 +168,7 @@ public class Specifications {
         tokenUser = accessToken;
     }
 
-    @BeforeSuite
+  //  @BeforeSuite
     public void AuthWithKadry() throws JSONException {
         Response response =
                 (Response) given()
@@ -189,7 +189,7 @@ public class Specifications {
         tokenKadry = accessToken;
     }
 
-    @BeforeSuite
+  //  @BeforeSuite
     public void AuthWithBuhgalter() throws JSONException {
         Response response =
                 (Response) given()
@@ -210,7 +210,7 @@ public class Specifications {
         tokenBuhgalter = accessToken;
     }
 
-    @BeforeSuite
+  //  @BeforeSuite
     public void AuthWithSales() throws JSONException {
         Response response =
                 (Response) given()
@@ -231,7 +231,7 @@ public class Specifications {
         tokenSales = accessToken;
     }
 
-    @BeforeSuite
+ //   @BeforeSuite
     public void AuthWithRN() throws JSONException {
         Response response =
                 (Response) given()
@@ -252,7 +252,7 @@ public class Specifications {
         tokenRN = accessToken;
     }
 
-    @BeforeSuite
+  //  @BeforeSuite
     public void AuthWithAccount() throws JSONException {
         Response response =
                 (Response) given()
@@ -273,7 +273,7 @@ public class Specifications {
         tokenAccount = accessToken;
     }
 
-    @BeforeSuite
+  //  @BeforeSuite
     public void AuthWithTop() throws JSONException {
         Response response =
                 (Response) given()
@@ -294,8 +294,8 @@ public class Specifications {
         tokenTop = accessToken;
     }
 
-    @BeforeSuite
-    public void getTokens() throws JSONException {
+  //  @BeforeSuite
+    public void getAllTokens() throws JSONException {
         System.out.println(token);
         System.out.println(tokenUser);
         System.out.println(tokenKadry);

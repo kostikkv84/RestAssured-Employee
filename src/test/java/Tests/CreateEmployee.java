@@ -227,7 +227,7 @@ public class CreateEmployee extends Specifications {
    @AfterClass
    //@Test
    public void deleteEmployeeAfterTests() {
-       WorkMethods.deleteEmployee(URL);
+       WorkMethods.deleteAllExtraEmployee(URL);
    }
 
     

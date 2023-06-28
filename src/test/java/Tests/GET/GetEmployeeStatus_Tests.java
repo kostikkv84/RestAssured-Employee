@@ -1,12 +1,17 @@
 package Tests.GET;
 
+import BaseClasses.WorkMethods;
 import PojoClasses.EmployeeStatusPojo.EmployeeStatusResponse;
+import PojoClasses.GetEmployeeResponsePOJO.Content;
 import PojoClasses.GetEmployeeResponsePOJO.Root;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 import spec.Specifications;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
 
@@ -25,7 +30,7 @@ public class GetEmployeeStatus_Tests extends Specifications {
                 .then().log().all()
                 .extract().body().jsonPath().getList("", EmployeeStatusResponse.class);
 
-        Assert.assertEquals(response.size(), 10, "Киличество типов статусов сотрудника больше или меньше 6!");
+        Assert.assertEquals(response.size(), 10, "Киличество типов статусов сотрудника больше или меньше 10!");
     }
 
     /**
@@ -41,14 +46,14 @@ public class GetEmployeeStatus_Tests extends Specifications {
                 .then().log().all()
                 .extract().body().jsonPath().getList("", EmployeeStatusResponse.class);
 
-        Assert.assertEquals(response.size(), 10, "Киличество типов статусов сотрудника больше или меньше 6!");
+        Assert.assertEquals(response.size(), 10, "Киличество типов статусов сотрудника больше или меньше 10!");
     }
 
     /**
      * Успешное получение одного статуса сотрников по ID статуса
      */
     @Test
-    public void getEmployeeOnID_Exist(){
+    public void getEmployeeStatusOnID_Exist(){
         installSpecification(requestSpec(URL), specResponseOK200());
         EmployeeStatusResponse response =given()
                 .header("Authorization", "Bearer " + Specifications.token)
@@ -60,5 +65,11 @@ public class GetEmployeeStatus_Tests extends Specifications {
         //  response.getContent().stream().forEach(x -> Assert.assertTrue(x.get().contains(x.getId().toString())));
         Assert.assertEquals(response.getId(), 4, "Статус с указанным ID не найден!");
         Assert.assertEquals(response.getEmployeeStatus(), "ИС: в процессе", "Наименование статуса не получено!");
+    }
+
+    //--------------------------------------------------------------
+    @AfterClass
+    public void deleteExtraEmployeeStatus(){
+        WorkMethods.deleteExtraEmployeeStatus(URL);
     }
 }

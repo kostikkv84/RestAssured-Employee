@@ -2,6 +2,7 @@ package BaseClasses;
 
 import PojoClasses.CreateNewEmployeePOJO.CreateNewEmployeeRequest;
 import PojoClasses.CreateNewEmployeePOJO.CreateNewEmployeeResponse;
+import PojoClasses.EmployeeStatusPojo.EmployeeStatusResponse;
 import PojoClasses.GetEmployeeResponsePOJO.Content;
 import PojoClasses.GetEmployeeResponsePOJO.Root;
 import io.qameta.allure.restassured.AllureRestAssured;
@@ -14,6 +15,7 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 import spec.Specifications;
 
 import java.util.ArrayList;
@@ -38,7 +40,7 @@ public class WorkMethods extends Specifications {
      * Очистка созданных для теста карточек
      * @param url
      */
-    public static void deleteEmployee(String url){
+    public static void deleteAllExtraEmployee(String url){
         // ПОлучение всех карточек сотрудников
         Integer count = 0;
         installSpecification(requestSpec(url), specResponseOK200());
@@ -145,6 +147,40 @@ public class WorkMethods extends Specifications {
                 .extract().body().as(CreateNewEmployeeResponse.class);
         System.out.println("Создан сотрудрик с ID: " + response.getId());
         return response;
+    }
+
+
+    public static void deleteExtraEmployeeStatus(String url){
+        List<EmployeeStatusResponse> response = given()
+                .header("Authorization", "Bearer " + Specifications.token)
+                .when()
+                .get(url + "/employee-status")
+                .then()//.log().all()
+                .extract().body().jsonPath().getList("", EmployeeStatusResponse.class);
+
+        // Достаем все ID-шники
+        List<Integer> listID = response.stream().map(EmployeeStatusResponse::getId).collect(Collectors.toList());
+        //   List<Integer> listToDelete = new ArrayList<>();
+        // Выбираем, те, что больше 10 в список
+        List<Integer> listToDelete = listID.stream().filter(p -> p > 10).collect(Collectors.toList());
+        // List<EmployeeStatusResponse> list = response.stream().filter(p -> p.getId() > 10).collect(Collectors.toList());
+
+        /**
+         * Удаляем все лишние записи статусов сотрудников.
+         */
+        for (Integer i=0; i<listToDelete.size(); i++) {
+            installSpecification(requestSpec(url), specResponseOK204());
+
+            given()
+                    .header("Content-type", "application/json")
+                    .header("Authorization", "Bearer "+token)
+                    .when()
+                    .delete(url+"/employee-status/" + listToDelete.get(i))
+                    .then()
+                    .extract().response();
+            System.out.println("Удален: " + listToDelete.get(i));
+        }
+
     }
 
 }
