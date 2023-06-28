@@ -1,5 +1,6 @@
 package Tests.POST;
 
+import BaseClasses.WorkMethods;
 import PojoClasses.GetEmployeeResponsePOJO.Content;
 import PojoClasses.CreateNewEmployeePOJO.CreateNewEmployeeRequest;
 import PojoClasses.CreateNewEmployeePOJO.CreateNewEmployeeResponse;
@@ -112,7 +113,7 @@ public class CreateEmployeeNameTests extends Specifications {
     @AfterClass
     //@Test
     public void deleteEmployeeAfterTests() {
-        Specifications.deleteEmployee(URL);
+        WorkMethods.deleteEmployee(URL);
     }
 
 }

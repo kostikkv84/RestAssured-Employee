@@ -74,25 +74,6 @@ public class CreateNewEmployeeRequest {
                 this.mainDepartmentId = mainDepartmentId;
         }
 
-    public CreateNewEmployeeRequest(String name, String surname, String middleName, String birthDate, String employmentDate, String dismissalDate, String avatar, String comment, String fullAddress, Integer mentorId, Integer employmentTypeId, Integer positionId, Integer curriculumVitaeId, Integer gradeDictId, Integer employeeStatusId, Integer locationId, Integer mainDepartmentId) {
-        this.name = name;
-        this.surname = surname;
-        this.middleName = middleName;
-        this.birthDate = birthDate;
-        this.employmentDate = employmentDate;
-        this.dismissalDate = dismissalDate;
-        this.avatar = avatar;
-        this.comment = comment;
-        this.fullAddress = fullAddress;
-        this.mentorId = mentorId;
-        this.employmentTypeId = employmentTypeId;
-        this.positionId = positionId;
-        this.curriculumVitaeId = curriculumVitaeId;
-        this.gradeDictId = gradeDictId;
-        this.employeeStatusId = employeeStatusId;
-        this.locationId = locationId;
-        this.mainDepartmentId = mainDepartmentId;
-    }
 
     /**
          *  СОздание сотрудника - полные данные
@@ -379,6 +360,19 @@ public class CreateNewEmployeeRequest {
                 .mainDepartmentId(mainDepartmentId).build();
 
     }
+
+    /**
+     *  СОздание сотрудника - workFormatId = null
+     * @param eName
+     * @return
+     */
+    public static CreateNewEmployeeRequest patchName (String eName) {
+
+
+        return CreateNewEmployeeRequest.builder()
+                .name(eName)
+                .build();
+             }
     //------------------------------------------------------------------------------------------------------------------
 
 

@@ -9,7 +9,6 @@ import static io.restassured.RestAssured.given;
 
 @Setter
 @Getter
-@Builder
 public class CreateNewEmployeeResponse {
     private int id;
     private String name;
@@ -17,6 +16,7 @@ public class CreateNewEmployeeResponse {
     private String middleName;
     private String birthDate;
     private String employmentDate;
+    private String dismissalDate;
     private String avatar;
     private String comment;
     private String fullAddress;
@@ -33,7 +33,7 @@ public class CreateNewEmployeeResponse {
     public CreateNewEmployeeResponse() {super();
     }
 
-    public CreateNewEmployeeResponse(int id, String name, String surname, String middleName, String birthDate, String employmentDate, String avatar, String comment, String fullAddress, Mentor mentor, WorkFormat workFormat, Position position, int curriculumVitaeId, Grade grade, EmployeeStatus employeeStatus, Location location, MainDepartment mainDepartment, EmploymentType employmentType) {
+    public CreateNewEmployeeResponse(int id, String name, String surname, String middleName, String birthDate, String employmentDate, String dismissalDate, String avatar, String comment, String fullAddress, Mentor mentor, WorkFormat workFormat, Position position, int curriculumVitaeId, Grade grade, EmployeeStatus employeeStatus, Location location, MainDepartment mainDepartment, EmploymentType employmentType) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -69,6 +69,22 @@ public class CreateNewEmployeeResponse {
                 .extract().body().as(CreateNewEmployeeResponse.class);
         System.out.println("Создан " + createdEmployee.getId());
         return createdEmployee;
+    }
+
+    /**
+     * Отправка запроса на создание сотрудника
+     */
+    public static CreateNewEmployeeResponse patchEmployeeSuccess(String url, String token, CreateNewEmployeeRequest requestBody, Integer id) {
+
+        CreateNewEmployeeResponse patchEmployee = given()
+                .header("Authorization", "Bearer " + token)
+                .body(requestBody)
+                .when()
+                .patch(url + "/employee/"+id)
+                .then()
+                .log().all()
+                .extract().body().as(CreateNewEmployeeResponse.class);
+        return patchEmployee;
     }
 
 
