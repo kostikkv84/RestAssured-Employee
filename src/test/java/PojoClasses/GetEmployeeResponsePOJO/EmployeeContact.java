@@ -11,7 +11,8 @@ public class EmployeeContact {
     private String telegram;
     private String email;
 
-    public EmployeeContact() {super();
+    public EmployeeContact() {
+        super();
     }
 
     public EmployeeContact(Integer id, String phone, String telegram, String email) {

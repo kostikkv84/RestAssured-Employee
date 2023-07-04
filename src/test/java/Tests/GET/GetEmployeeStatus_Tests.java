@@ -2,16 +2,12 @@ package Tests.GET;
 
 import BaseClasses.WorkMethods;
 import PojoClasses.EmployeeStatusPojo.EmployeeStatusResponse;
-import PojoClasses.GetEmployeeResponsePOJO.Content;
-import PojoClasses.GetEmployeeResponsePOJO.Root;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 import spec.Specifications;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
 
@@ -53,9 +49,9 @@ public class GetEmployeeStatus_Tests extends Specifications {
      * Успешное получение одного статуса сотрников по ID статуса
      */
     @Test
-    public void getEmployeeStatusOnID_Exist(){
+    public void getEmployeeStatusOnID_Exist() {
         installSpecification(requestSpec(URL), specResponseOK200());
-        EmployeeStatusResponse response =given()
+        EmployeeStatusResponse response = given()
                 .header("Authorization", "Bearer " + Specifications.token)
                 .when()
                 .get(URL + "/employee-status/4")
@@ -69,7 +65,7 @@ public class GetEmployeeStatus_Tests extends Specifications {
 
     //--------------------------------------------------------------
     @AfterClass
-    public void deleteExtraEmployeeStatus(){
+    public void deleteExtraEmployeeStatus() {
         WorkMethods.deleteExtraEmployeeStatus(URL);
     }
 }

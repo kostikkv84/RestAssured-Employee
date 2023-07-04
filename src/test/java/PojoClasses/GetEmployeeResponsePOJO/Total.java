@@ -8,7 +8,8 @@ import lombok.Setter;
 public class Total {
     private Integer total;
 
-    public Total() {super();
+    public Total() {
+        super();
     }
 
     public Total(Integer total) {

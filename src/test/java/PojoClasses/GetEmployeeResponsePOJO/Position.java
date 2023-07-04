@@ -9,7 +9,8 @@ public class Position {
     private Integer id;
     private String value;
 
-    public Position() {super();
+    public Position() {
+        super();
     }
 
     public Position(Integer id, String value) {

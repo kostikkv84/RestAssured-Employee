@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "telegram": {
+      "type": "string"
+    },
+    "skype": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "employee": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "surname": {
+          "type": "string"
+        },
+        "middleName": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "surname",
+        "middleName"
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "phone",
+    "telegram",
+    "skype",
+    "email",
+    "employee"
+  ]
+}

@@ -9,7 +9,8 @@ public class EmployeeStatus {
     private Integer id;
     private String employeeStatus;
 
-    public EmployeeStatus() {super();
+    public EmployeeStatus() {
+        super();
     }
 
     public EmployeeStatus(Integer id, String employeeStatus) {

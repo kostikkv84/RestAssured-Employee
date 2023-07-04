@@ -1,6 +1,8 @@
 package PojoClasses.ErrorEmployeePOJO;
 
 import PojoClasses.CreateNewEmployeePOJO.CreateNewEmployeeRequest;
+import PojoClasses.EmployeeContactPOJO.EmployeeContactRequest;
+import Tests.POST.CreateContactsEmployee;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,13 +15,14 @@ import static io.restassured.RestAssured.given;
 @Setter
 @Getter
 @Builder
-public class ErrorResponse  {
+public class ErrorResponse {
     private String id;
     private String description;
     private String details;
     private Date timestamp;
 
-    public ErrorResponse() {super();
+    public ErrorResponse() {
+        super();
     }
 
     public ErrorResponse(String id, String description, String details, Date timestamp) {
@@ -29,31 +32,54 @@ public class ErrorResponse  {
         this.timestamp = timestamp;
     }
 
-    public List<ErrorResponse> createEmployeeErrorList(String url, String token, CreateNewEmployeeRequest requestBody){
-
-
+    public static List<ErrorResponse> createEmployeeErrorList(String url, String token, CreateNewEmployeeRequest requestBody) {
         List<ErrorResponse> error = given()
-                .header("Authorization", "Bearer "+token)
+                .header("Authorization", "Bearer " + token)
                 .body(requestBody)
                 .when()
                 .post(url + "/employee")
                 .then()
                 .log().all()
-                .extract().jsonPath().getList("",ErrorResponse.class);
-        return  error;
+                .extract().jsonPath().getList("", ErrorResponse.class);
+        return error;
     }
 
-   public ErrorResponse  createEmployeeError(String url, String token, CreateNewEmployeeRequest requestBody){
-
+    public static ErrorResponse createEmployeeError(String url, String token, CreateNewEmployeeRequest requestBody) {
         ErrorResponse error = given()
-                .header("Authorization", "Bearer "+token)
+                .header("Authorization", "Bearer " + token)
                 .body(requestBody)
                 .when()
                 .post(url + "/employee")
                 .then()
                 .log().all()
                 .extract().body().as(ErrorResponse.class);
-        return  error;
+        return error;
+    }
+
+    public static ErrorResponse createContactError(String url, String token, EmployeeContactRequest requestBody) {
+
+        ErrorResponse error = given()
+                .header("Authorization", "Bearer " + token)
+                .body(requestBody)
+                .when()
+                .post(url + "/employee-contact")
+                .then()
+                .log().all()
+                .extract().body().as(ErrorResponse.class);
+        return error;
+    }
+
+    public static List<ErrorResponse> createContactErrorList(String url, String token, EmployeeContactRequest requestBody) {
+
+       List<ErrorResponse> error = given()
+                .header("Authorization", "Bearer " + token)
+                .body(requestBody)
+                .when()
+                .post(url + "/employee-contact")
+                .then()
+                .log().all()
+                .extract().jsonPath().getList("",ErrorResponse.class);
+        return error;
     }
 
    /* public ErrorResponse  createEmployeeErrorWorkFormatIdNull (){

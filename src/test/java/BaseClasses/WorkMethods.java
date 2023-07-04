@@ -2,6 +2,7 @@ package BaseClasses;
 
 import PojoClasses.CreateNewEmployeePOJO.CreateNewEmployeeRequest;
 import PojoClasses.CreateNewEmployeePOJO.CreateNewEmployeeResponse;
+import PojoClasses.EmployeeContactPOJO.EmployeeContactResponse;
 import PojoClasses.EmployeeStatusPojo.EmployeeStatusResponse;
 import PojoClasses.GetEmployeeResponsePOJO.Content;
 import PojoClasses.GetEmployeeResponsePOJO.Root;
@@ -11,11 +12,13 @@ import io.restassured.response.Response;
 import org.apache.commons.lang.RandomStringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 import spec.Specifications;
 
 import java.util.ArrayList;
@@ -25,7 +28,23 @@ import java.util.stream.Collectors;
 import static io.restassured.RestAssured.given;
 
 public class WorkMethods extends Specifications {
-    public String RandomString(int n) {
+
+    public static Root getAllEmployee(String url, String token){
+        installSpecification(requestSpec(url), specResponseOK200());
+
+        Root employeers = given()
+                .header("Authorization", "Bearer " + token)
+                .when()
+                .get(url + "/employee")
+                .then()
+                //.log().all()
+                .extract().body().as(Root.class);
+       return employeers;
+    }
+
+
+    // генерация случайной строки
+    public static String RandomString(int n) {
 
         int length = n;
         boolean useLetters = true;
@@ -33,14 +52,23 @@ public class WorkMethods extends Specifications {
         String generatedString = RandomStringUtils.random(length, useLetters, useNumbers);
 
         return generatedString;
-    } // генерация случайной строки
+    }
 
+    // генерация случайного числа
+    public static String RandomNumber(int n) {
+        int length = n;
+        boolean useLetters = false;
+        boolean useNumbers = true;
+        String generateNum = RandomStringUtils.random(length, useLetters, useNumbers);
+
+        return generateNum;
+    }
 
     /**
      * Очистка созданных для теста карточек
      * @param url
      */
-    public static void deleteAllExtraEmployee(String url){
+    public static void deleteAllExtraEmployee(String url, String token){
         // ПОлучение всех карточек сотрудников
         Integer count = 0;
         installSpecification(requestSpec(url), specResponseOK200());
@@ -80,20 +108,6 @@ public class WorkMethods extends Specifications {
             System.out.println("Удален: " + listToDelete.get(i));
 
         }
-
-
-        // проверяем количество записей, что их 6
-    /*    installSpecification(requestSpec(URL), specResponseOK200());
-        List<VacationType> listAfterDelete = given().header("Authorization", "Bearer "+token)
-                .when()
-                .get(URL + "/vacationType")
-                .then()
-                //.then().log().all()
-                .extract().jsonPath().getList("",VacationType.class);
-        List<Integer> idTypesAfterDelete = list.stream().map(VacationType::getId).collect(Collectors.toList());
-        System.out.println("ID отпусков после удаления: " + idTypesAfterDelete);
-        Assert.assertEquals(listAfterDelete.size(),6);
-*/
     }
 
     public static void deleteEmployeeOnId(String url, Integer id){
@@ -107,6 +121,45 @@ public class WorkMethods extends Specifications {
                 .then()
                 .extract();
     }
+
+    /**
+     * Очистка лишних записей с контактами
+     */
+    public static void deleteExtraContacts(String url, String token){
+        installSpecification(requestSpec(url), specResponseOK200());
+        List<EmployeeContactResponse> list = given()
+                .header("Authorization", "Bearer " + token)
+                .when()
+                .get(url + "/employee-contact")
+                .then()
+               // .log().all()
+                .extract().body().jsonPath().getList("",EmployeeContactResponse.class);
+
+        // Создаем список ID карточек сотрудников
+        List<Integer> listID = list.stream().map(EmployeeContactResponse::getId).collect(Collectors.toList());
+        List<Integer> listToDelete = new ArrayList<>();
+
+        // для безопасности, создадим отдельный список с ID на удаление сотрудников. Где ID больше 320
+        for (int i=0;i<listID.size();i++) {
+            if (listID.get(i)>20) {
+                listToDelete.add(listID.get(i));
+            }
+        }
+
+        for (int i=0;i<listToDelete.size();i++) {
+            installSpecification(requestSpec(url), specResponseOK204());
+            given()
+                    .header("Authorization", "Bearer " + token)
+                    .when()
+                    .delete(url + "/employee-contact/" + listToDelete.get(i))
+                    .then()
+                    .log().all();
+            System.out.println("Удален контакт с ID: " + listToDelete.get(i));
+        }
+
+    }
+
+
 
     /**
      * СОздание сотрудника для тестов

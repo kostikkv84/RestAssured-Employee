@@ -1,7 +1,6 @@
 package PojoClasses.CreateNewEmployeePOJO;
 
 import PojoClasses.GetEmployeeResponsePOJO.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,7 +29,8 @@ public class CreateNewEmployeeResponse {
     private MainDepartment mainDepartment;
     private EmploymentType employmentType;
 
-    public CreateNewEmployeeResponse() {super();
+    public CreateNewEmployeeResponse() {
+        super();
     }
 
     public CreateNewEmployeeResponse(int id, String name, String surname, String middleName, String birthDate, String employmentDate, String dismissalDate, String avatar, String comment, String fullAddress, Mentor mentor, WorkFormat workFormat, Position position, int curriculumVitaeId, Grade grade, EmployeeStatus employeeStatus, Location location, MainDepartment mainDepartment, EmploymentType employmentType) {
@@ -65,7 +65,8 @@ public class CreateNewEmployeeResponse {
                 .body(requestBody)
                 .when()
                 .post(url + "/employee")
-                .then().log().all()
+                .then()
+                //.log().all()
                 .extract().body().as(CreateNewEmployeeResponse.class);
         System.out.println("Создан " + createdEmployee.getId());
         return createdEmployee;
@@ -80,7 +81,7 @@ public class CreateNewEmployeeResponse {
                 .header("Authorization", "Bearer " + token)
                 .body(requestBody)
                 .when()
-                .patch(url + "/employee/"+id)
+                .patch(url + "/employee/" + id)
                 .then()
                 .log().all()
                 .extract().body().as(CreateNewEmployeeResponse.class);

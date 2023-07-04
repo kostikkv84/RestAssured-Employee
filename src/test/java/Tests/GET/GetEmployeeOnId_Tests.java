@@ -18,17 +18,17 @@ public class GetEmployeeOnId_Tests extends Specifications {
      * Успешное получение сотрудника - ID = 2
      */
     @Test
-    public void getEmployeeOnID_Exist(){
+    public void getEmployeeOnID_Exist() {
         installSpecification(requestSpec(URL), specResponseOK200());
-        Root response =given()
+        Root response = given()
                 .header("Authorization", "Bearer " + Specifications.token)
-                .param("id","2")
+                .param("id", "2")
                 .when()
                 .get(URL + "/employee/filter")
                 .then()//.log().all()
                 .extract().body().as(Root.class);
 
-      //  response.getContent().stream().forEach(x -> Assert.assertTrue(x.get().contains(x.getId().toString())));
+        //  response.getContent().stream().forEach(x -> Assert.assertTrue(x.get().contains(x.getId().toString())));
         Assert.assertEquals(response.getContent().get(0).getId(), 2, "СОтрудник с указанным ID не найден!");
     }
 
@@ -37,11 +37,11 @@ public class GetEmployeeOnId_Tests extends Specifications {
      * Ответ с количеством 0
      */
     @Test
-    public void getEmployeeOnID_notExist(){
+    public void getEmployeeOnID_notExist() {
         installSpecification(requestSpec(URL), specResponseOK200());
-        Total response =given()
+        Total response = given()
                 .header("Authorization", "Bearer " + Specifications.token)
-                .param("id","2122546")
+                .param("id", "2122546")
                 .when()
                 .get(URL + "/employee/filter")
                 .then().log().all()
@@ -55,15 +55,15 @@ public class GetEmployeeOnId_Tests extends Specifications {
      * Ошибка получения сотрудника - если ID = 0
      */
     @Test
-    public void getEmployeeOnID_0(){
+    public void getEmployeeOnID_0() {
         installSpecification(requestSpec(URL), specResponseError400());
-        List<ErrorResponse> error =given()
+        List<ErrorResponse> error = given()
                 .header("Authorization", "Bearer " + Specifications.token)
-                .param("id","0")
+                .param("id", "0")
                 .when()
                 .get(URL + "/employee/filter")
                 .then()//.log().all()
-                .extract().body().jsonPath().getList("",ErrorResponse.class);
+                .extract().body().jsonPath().getList("", ErrorResponse.class);
         //  response.getContent().stream().forEach(x -> Assert.assertTrue(x.get().contains(x.getId().toString())));
         Assert.assertEquals(error.get(0).getDescription(), "Поле id - must be greater than 0", "Ожидаемая ошибка не получена!");
     }
@@ -72,15 +72,15 @@ public class GetEmployeeOnId_Tests extends Specifications {
      * Ошибка получения сотрудника - если ID = String
      */
     @Test
-    public void getEmployeeOnID_String(){
+    public void getEmployeeOnID_String() {
         installSpecification(requestSpec(URL), specResponseError400());
-        List<ErrorResponse> error =given()
+        List<ErrorResponse> error = given()
                 .header("Authorization", "Bearer " + Specifications.token)
-                .param("id","Text")
+                .param("id", "Text")
                 .when()
                 .get(URL + "/employee/filter")
                 .then()//.log().all()
-                .extract().body().jsonPath().getList("",ErrorResponse.class);
+                .extract().body().jsonPath().getList("", ErrorResponse.class);
         //  response.getContent().stream().forEach(x -> Assert.assertTrue(x.get().contains(x.getId().toString())));
         Assert.assertTrue(error.get(0).getDescription().contains("exception is java.lang.NumberFormatException: For input string:"), "Ожидаемая ошибка не получена!");
     }

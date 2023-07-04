@@ -10,7 +10,8 @@ public class Location {
     private String region;
     private String city;
 
-    public Location() {super();
+    public Location() {
+        super();
     }
 
 }

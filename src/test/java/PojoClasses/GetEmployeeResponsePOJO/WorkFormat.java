@@ -9,7 +9,8 @@ public class WorkFormat {
     private Integer id;
     private String value;
 
-    public WorkFormat() {super();
+    public WorkFormat() {
+        super();
     }
 
     public WorkFormat(Integer id, String value) {

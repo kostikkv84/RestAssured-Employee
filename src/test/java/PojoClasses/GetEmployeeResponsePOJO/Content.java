@@ -24,7 +24,8 @@ public class Content {
     private String city;
     private EmployeeContact employeeContact;
 
-    public Content() {super();
+    public Content() {
+        super();
     }
 
     public Content(Integer id, String name, String surname, String middleName, String birthDate, String employmentDate, MainDepartment mainDepartment, Position position, Grade grade, EmployeeStatus employeeStatus, WorkFormat workFormat, String employmentType, Salary salary, String city, EmployeeContact employeeContact) {

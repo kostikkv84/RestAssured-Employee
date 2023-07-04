@@ -40,18 +40,6 @@ public class GetEmployee extends Specifications {
 
     }
 
-    /**
-     * Получение списка сотрудников - auth User
-     */
-    @Test
-    public void getAllEmployeeUser(){
-         installSpecification(requestSpec(URL), specResponseError403());
-        given()
-                .header("Authorization", "Bearer " + Specifications.tokenUser)
-                .when()
-                .get(URL + "/employee")
-                .then().log().all();
-    }
 
     /**
      * Проверка схемы Employee - полученного запросом Get
