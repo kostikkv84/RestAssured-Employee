@@ -32,6 +32,7 @@ public class ErrorResponse {
         this.timestamp = timestamp;
     }
 
+    // ------------------ EMPLOYEE ----------------------------
     public static List<ErrorResponse> createEmployeeErrorList(String url, String token, CreateNewEmployeeRequest requestBody) {
         List<ErrorResponse> error = given()
                 .header("Authorization", "Bearer " + token)
@@ -56,6 +57,57 @@ public class ErrorResponse {
         return error;
     }
 
+    public static ErrorResponse patchEmployeeError(String url, String token, CreateNewEmployeeRequest requestBody, Integer idEmployee) {
+        ErrorResponse error = given()
+                .header("Authorization", "Bearer " + token)
+                .body(requestBody)
+                .when()
+                .patch(url + "/employee/" + idEmployee)
+                .then()
+                .log().all()
+                .extract().body().as(ErrorResponse.class);
+        return error;
+    }
+
+    public static ErrorResponse patchEmployeeErrorStr(String url, String token, String requestBody, Integer idEmployee) {
+        ErrorResponse error = given()
+                .header("Authorization", "Bearer " + token)
+                .body(requestBody)
+                .when()
+                .patch(url + "/employee/" + idEmployee)
+                .then()
+                .log().all()
+                .extract().body().as(ErrorResponse.class);
+        return error;
+    }
+
+    public static List<ErrorResponse> patchEmployeeErrorList(String url, String token, String requestBody, Integer idEmployee) {
+        List<ErrorResponse> error = given()
+                .header("Authorization", "Bearer " + token)
+                .body(requestBody)
+                .when()
+                .patch(url + "/employee/" + idEmployee)
+                .then()
+                .log().all()
+                .extract().jsonPath().getList("", ErrorResponse.class);
+        return error;
+    }
+
+
+  /*  public static List<ErrorResponse> patchEmployeeErrorList(String url, String token, CreateNewEmployeeRequest requestBody, Integer idEmployee) {
+        List<ErrorResponse> error = given()
+                .header("Authorization", "Bearer " + token)
+                .body(requestBody)
+                .when()
+                .patch(url + "/employee/" + idEmployee)
+                .then()
+                .log().all()
+                .extract().jsonPath().getList("", ErrorResponse.class);
+        return error;
+    }*/
+
+
+    //----------------- CONTACTS ----------------------------------------------
     public static ErrorResponse createContactError(String url, String token, EmployeeContactRequest requestBody) {
 
         ErrorResponse error = given()

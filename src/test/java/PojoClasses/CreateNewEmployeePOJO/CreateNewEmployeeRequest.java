@@ -80,6 +80,13 @@ public class CreateNewEmployeeRequest {
     }
 
 
+  /*  public CreateNewEmployeeRequest setName(String eName) {
+        this.name = eName;
+        return this;
+    }
+*/
+
+
     /**
      * СОздание сотрудника - полные данные
      *
@@ -152,7 +159,7 @@ public class CreateNewEmployeeRequest {
      * @param mainDepartmentId
      * @return
      */
-    public static CreateNewEmployeeRequest createEmployeeNameNull(String eSurname, String eMiddleName, String eBirthDate, String employmentDate, String dismissalDate,
+   public static CreateNewEmployeeRequest createEmployeeNameNull(String eSurname, String eMiddleName, String eBirthDate, String employmentDate, String dismissalDate,
                                                                   String avatar, String comment, String fullAddress, Integer mentorId, Integer workFormatId,
                                                                   Integer employmentTypeId, Integer positionId, Integer curriculumVitaeId,
                                                                   Integer gradeDictId, Integer employeeStatusId,
@@ -372,18 +379,8 @@ public class CreateNewEmployeeRequest {
 
     }
 
-    /**
-     * СОздание сотрудника - workFormatId = null
-     *
-     * @param eName
-     * @return
-     */
-    public static CreateNewEmployeeRequest patchName(String eName) {
 
-        return CreateNewEmployeeRequest.builder()
-                .name(eName)
-                .build();
-    }
+
     //------------------------------------------------------------------------------------------------------------------
 
 

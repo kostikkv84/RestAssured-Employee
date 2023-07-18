@@ -6,21 +6,10 @@ import PojoClasses.EmployeeContactPOJO.EmployeeContactResponse;
 import PojoClasses.EmployeeStatusPojo.EmployeeStatusResponse;
 import PojoClasses.GetEmployeeResponsePOJO.Content;
 import PojoClasses.GetEmployeeResponsePOJO.Root;
-import io.qameta.allure.restassured.AllureRestAssured;
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
 import org.apache.commons.lang.RandomStringUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.testng.Assert;
-import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 import spec.Specifications;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,7 +31,7 @@ public class WorkMethods extends Specifications {
        return employeers;
     }
 
-
+//----------- Генерация данных ------------------------------------------------------------------
     // генерация случайной строки
     public static String RandomString(int n) {
 
@@ -54,7 +43,7 @@ public class WorkMethods extends Specifications {
         return generatedString;
     }
 
-    // генерация случайного числа
+    // генерация случайного числа - String
     public static String RandomNumber(int n) {
         int length = n;
         boolean useLetters = false;
@@ -64,6 +53,14 @@ public class WorkMethods extends Specifications {
         return generateNum;
     }
 
+    // Генерация числа в диапазоне
+    public static int getRandomNumber(int min, int max) {
+        return (int) Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+
+
+//------------------------------------------------------------------------------------------------
     /**
      * Очистка созданных для теста карточек
      * @param url
@@ -234,6 +231,21 @@ public class WorkMethods extends Specifications {
             System.out.println("Удален: " + listToDelete.get(i));
         }
 
+    }
+
+    public static String RequestBodyPatchStr(String key, String value){
+        String requestBody = "{\n" + "    \"" + key + "\"" + " : " + "\"" + value +  "\"" + "\n}";
+        return requestBody;
+    }
+
+    public static String RequestBodyPatchInt(String key, Integer value){
+        String requestBody = "{\n" + "    \"" + key + "\"" + " : " + value + "\n}";
+        return requestBody;
+    }
+
+    public static String RequestBodyPatchBigInt(String key, BigInteger value){
+        String requestBody = "{\n" + "    \"" + key + "\"" + " : " + value + "\n}";
+        return requestBody;
     }
 
 }

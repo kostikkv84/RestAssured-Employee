@@ -193,8 +193,23 @@ public class CreateContactsEmployee extends Specifications {
         Assert.assertTrue(error.get(0).getDescription().contains("Поле phone: Не верный номер телефона"), "Ожидаемая ошибка не получена");
     }
 
-//---------- Telegram - Обработка ошибок создания контактов  -------------------------------
+    /**
+     * Не верный номер телефона - String
+     */
+    @Test
+    public void errorPhoneString(){
+        installSpecification(requestSpec(URL), specResponseError400());
+        EmployeeContactRequest requestBody = new EmployeeContactRequest(WorkMethods.RandomString(5), "Test_phoneString",
+                "Test_phoneString", "Test_phoneString", "Test_phoneString@test.ru", 60);
+        List<ErrorResponse> error = EmployeeContactResponse.createContactErrorList(URL, token, requestBody);
+        // проверяем ответ.
+        Assert.assertEquals(error.get(0).getDescription(), "Поле phone: Не верный номер телефона", "Телефон верный+" +
+                "");
 
+    }
+
+
+//---------- Telegram - Обработка ошибок создания контактов  -------------------------------
 
     /**
      * BUG - Telegram - Double - дубль, уже существует в другой записи
@@ -276,23 +291,6 @@ public class CreateContactsEmployee extends Specifications {
         Assert.assertTrue(error.getDescription().contains("добавления или обновления записи в бд"), "Ожидаемая ошибка не получена");
     }
 
-
-
-
-    /**
-     * Не верный номер телефона - String
-     */
-    @Test
-    public void errorPhoneString(){
-        installSpecification(requestSpec(URL), specResponseError400());
-        EmployeeContactRequest requestBody = new EmployeeContactRequest(WorkMethods.RandomString(5), "Test_phoneString",
-                "Test_phoneString", "Test_phoneString", "Test_phoneString@test.ru", 60);
-        List<ErrorResponse> error = EmployeeContactResponse.createContactErrorList(URL, token, requestBody);
-        // проверяем ответ.
-        Assert.assertEquals(error.get(0).getDescription(), "Поле phone: Не верный номер телефона", "Телефон верный+" +
-                "");
-
-    }
 
 
     //-----------------------------------------------------------------------------------

@@ -119,6 +119,100 @@ public class CreateEmployee extends Specifications {
         Assert.assertEquals(errorText, "Поле workFormatId: must be greater than 0");
     }
 
+    //-------- Тесты комментария -----------------------------------------------
+    @Test(description = "Success - create Comment = 4000 символов")
+    public void createEmployee_Comment_4000_Symbols() {
+        installSpecification(requestSpec(URL), specResponseOK201());
+        String commentString = StringGenerate.RandomString(4000);
+
+        CreateNewEmployeeResponse response = new CreateNewEmployeeResponse();
+        CreateNewEmployeeRequest requestBody = CreateNewEmployeeRequest.builder()
+                .name("Test")
+                .surname("Test")
+                .middleName("Test")
+                .birthDate("01.05.1989")
+                .employmentDate("03.01.2023")
+                .dismissalDate("")
+                .avatar("http://Avatar")
+                .comment(commentString)
+                .fullAddress("Адрес")
+                .mentorId(2)
+                .workFormatId(2)
+                .employmentTypeId(1)
+                .positionId(1)
+                .curriculumVitaeId(2)
+                .gradeDictId(2)
+                .employeeStatusId(1)
+                .locationId(2)
+                .mainDepartmentId(2).build();
+
+        String comment = response.createEmployeeSuccess(URL, Specifications.token, requestBody).getComment();
+     //   System.out.println("Текст ошибки: " + errorText);
+        Assert.assertEquals(comment, commentString, "Полученный комментарий не совпадает с ожидаемым");
+    }
+
+    @Test(description = "Error - create Comment = 4001 символов")
+    public void createEmployee_Comment_4001_Symbols() {
+        installSpecification(requestSpec(URL), specResponseError400());
+        ErrorResponse error = new ErrorResponse();
+        CreateNewEmployeeRequest requestBody = CreateNewEmployeeRequest.builder()
+                .name("Test")
+                .surname("Test")
+                .middleName("Test")
+                .birthDate("01.05.1989")
+                .employmentDate("03.01.2023")
+                .dismissalDate("")
+                .avatar("http://Avatar")
+                .comment(StringGenerate.RandomString(4001))
+                .fullAddress("Full address")
+                .mentorId(2)
+                .workFormatId(2)
+                .employmentTypeId(1)
+                .positionId(1)
+                .curriculumVitaeId(2)
+                .gradeDictId(2)
+                .employeeStatusId(1)
+                .locationId(2)
+                .mainDepartmentId(2).build();
+
+        String errorText = error.createEmployeeError(URL, Specifications.token, requestBody).getDetails();
+        System.out.println("Текст ошибки: " + errorText);
+        Assert.assertEquals(errorText, "ERROR: value too long for type character varying(4000)");
+    }
+
+    /**
+     * Создание сотрудника - FullAddress = null - через builder
+     */
+    @Test(description = "Error - create Comments = пустое значение - пробел")
+    public void createEmployee_Comment_Null() {
+        installSpecification(requestSpec(URL), specResponseError400());
+        ErrorResponse error = new ErrorResponse();
+        CreateNewEmployeeRequest requestBody = CreateNewEmployeeRequest.builder()
+                .name("Test")
+                .surname("Test")
+                .middleName("Test")
+                .birthDate("01.05.1989")
+                .employmentDate("03.01.2023")
+                .dismissalDate("")
+                .avatar("http://Avatar")
+                .comment(" ")
+                .fullAddress("Адресс")
+                .mentorId(2)
+                .workFormatId(2)
+                .employmentTypeId(1)
+                .positionId(1)
+                .curriculumVitaeId(2)
+                .gradeDictId(2)
+                .employeeStatusId(1)
+                .locationId(2)
+                .mainDepartmentId(2).build();
+
+        String errorText = error.createEmployeeErrorList(URL, Specifications.token, requestBody).get(0).getDescription();
+        System.out.println("Текст ошибки: " + errorText);
+        Assert.assertEquals(errorText, "Поле comment: если поле не null, то должно быть не пустым");
+    }
+
+    //-------- Тесты Адреса ----------------------------------------------------
     /**
      * Создание сотрудника - FullAddress = null - через builder
      */
@@ -149,6 +243,35 @@ public class CreateEmployee extends Specifications {
         String errorText = error.createEmployeeErrorList(URL, Specifications.token, requestBody).get(0).getDescription();
         System.out.println("Текст ошибки: " + errorText);
         Assert.assertEquals(errorText, "Поле fullAddress: если поле не null, то должно быть не пустым");
+    }
+
+    @Test(description = "Error - create Address = null")
+    public void createEmployeeAddressEmpty() {
+        installSpecification(requestSpec(URL), specResponseError400());
+        ErrorResponse error = new ErrorResponse();
+        CreateNewEmployeeRequest requestBody = CreateNewEmployeeRequest.builder()
+                .name("Test")
+                .surname("Test")
+                .middleName("Test")
+                .birthDate("01.05.1989")
+                .employmentDate("03.01.2023")
+                .dismissalDate("")
+                .avatar("http://Avatar")
+                .comment("Комментарий ...")
+            //    .fullAddress(" ")
+                .mentorId(2)
+                .workFormatId(2)
+                .employmentTypeId(1)
+                .positionId(1)
+                .curriculumVitaeId(2)
+                .gradeDictId(2)
+                .employeeStatusId(1)
+                .locationId(2)
+                .mainDepartmentId(2).build();
+
+        String errorText = error.createEmployeeError(URL, Specifications.token, requestBody).getDescription();
+        System.out.println("Текст ошибки: " + errorText);
+        Assert.assertTrue(errorText.contains("добавления или обновления записи в бд"), "Текст ошибки не получен");
     }
 
     @Test(description = "Error - create Address = 1001 символов")

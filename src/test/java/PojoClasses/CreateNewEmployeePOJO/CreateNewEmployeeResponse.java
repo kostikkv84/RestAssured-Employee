@@ -75,11 +75,11 @@ public class CreateNewEmployeeResponse {
     /**
      * Отправка запроса на создание сотрудника
      */
-    public static CreateNewEmployeeResponse patchEmployeeSuccess(String url, String token, CreateNewEmployeeRequest requestBody, Integer id) {
+    public static CreateNewEmployeeResponse patchemployeesuccess(String url, String token, String body, Integer id) {
 
         CreateNewEmployeeResponse patchEmployee = given()
                 .header("Authorization", "Bearer " + token)
-                .body(requestBody)
+                .body(body)
                 .when()
                 .patch(url + "/employee/" + id)
                 .then()
@@ -87,6 +87,4 @@ public class CreateNewEmployeeResponse {
                 .extract().body().as(CreateNewEmployeeResponse.class);
         return patchEmployee;
     }
-
-
 }
