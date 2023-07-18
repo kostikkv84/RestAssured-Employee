@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true" name="E:/JavaProject/RestAssured-Employee">
+        <classes>
+            <class name="Tests.CreateEmployee">
+                <methods>
+                    <include name="addEmployee"/>
+                    <include name="addEmployee_builder"/>
+                    <include name="createEmployeeBirthDateNull"/>
+                    <include name="createEmployeeEmploymentDateNull"/>
+                    <include name="createEmployeeWorkFormatIdNull_BUG"/>
+                    <include name="createEmployee_Comment_4000_Symbols"/>
+                    <include name="createEmployee_Comment_4001_Symbols"/>
+                    <include name="createEmployee_Comment_Null"/>
+                    <include name="createEmployeeAddressNull"/>
+                    <include name="createEmployeeAddressEmpty"/>
+                    <include name="createEmployeeAddress1001Symbols"/>
+                    <include name="createEmployeeAddress1000Symbols"/>
+                </methods>
+            </class>
+            <class name="Tests.GET.GetContactEmployee">
+                <methods>
+                    <include name="getAllContacts"/>
+                </methods>
+            </class>
+            <class name="Tests.GET.GetEmployee">
+                <methods>
+                    <include name="getAllEmployeeSuccessAdmin"/>
+                    <include name="getEmployeeCheckJsonSchema"/>
+                    <include name="getAllEmployeeSizeTest"/>
+                    <include name="getAllEmployeeSize0"/>
+                    <include name="getAllEmployeeSize1"/>
+                    <include name="getAllEmployeeSize500"/>
+                    <include name="getAllEmployeeSize501"/>
+                    <include name="getAllEmployeePageTest"/>
+                </methods>
+            </class>
+            <class name="Tests.GET.GetEmployeeDifferentRoles">
+                <methods>
+                    <include name="getAllEmployeeUser"/>
+                    <include name="getAllEmployeeKadry"/>
+                    <include name="getAllEmployeeBuhgalter"/>
+                </methods>
+            </class>
+            <class name="Tests.GET.GetEmployeeOnId_Tests">
+                <methods>
+                    <include name="getEmployeeOnID_Exist"/>
+                    <include name="getEmployeeOnID_notExist"/>
+                    <include name="getEmployeeOnID_0"/>
+                    <include name="getEmployeeOnID_String"/>
+                </methods>
+            </class>
+            <class name="Tests.GET.GetEmployeeStatus_Tests">
+                <methods>
+                    <include name="getAllEmployeeStatusTypes_admin"/>
+                    <include name="getAllEmployeeStatusTypes_user"/>
+                    <include name="getEmployeeStatusOnID_Exist"/>
+                </methods>
+            </class>
+            <class name="Tests.GET.GetMainDepartmentId_Tests">
+                <methods>
+                    <include name="getEmployeeListOnMainDepartmentId"/>
+                    <include name="getEmployeeListOnMainDepartmentId_0"/>
+                    <include name="getEmployeeListOnMainDepartmentId_String"/>
+                </methods>
+            </class>
+            <class name="Tests.PATCH.PatchEmployeeDateTests">
+                <methods>
+                    <include name="createEmployeeDismissalDateInPast"/>
+                    <include name="createEmployeeEmploymentDateNumber"/>
+                    <include name="createEmployeeEmploymentDateText"/>
+                </methods>
+            </class>
+            <class name="Tests.PATCH.PatchEmployee_Success_Admin">
+                <methods>
+                    <include name="changeNamePatch"/>
+                    <include name="changeSurnamePatch"/>
+                    <include name="changeMiddleNamePatch"/>
+                    <include name="changeBirthDatePatch"/>
+                    <include name="changeEmploymentDatePatch"/>
+                    <include name="changeDismissalDatePatch"/>
+                    <include name="changeAvatarPatch"/>
+                    <include name="changeCommentPatch"/>
+                    <include name="changeFullAddressPatch"/>
+                    <include name="changeMentorIdPatch"/>
+                    <include name="changeWorkFormatIdPatch"/>
+                    <include name="changeEmploymentTypeIdPatch"/>
+                    <include name="changePositionIdPatch"/>
+                    <include name="changeCurriculumVitaeIdPatch"/>
+                    <include name="changeGradeIdPatch"/>
+                    <include name="changeEmployeeStatusIdPatch"/>
+                    <include name="changeLocationIdPatch"/>
+                    <include name="changeDepartmentIdPatch"/>
+                </methods>
+            </class>
+            <class name="Tests.PATCH.PatchParams">
+                <methods>
+                    <include name="patchEmployee_mainDepartmentId_NotExist"/>
+                    <include name="patchEmployee_mainDepartmentId_0"/>
+                    <include name="patchEmployee_mainDepartmentId_BigNumber"/>
+                    <include name="patchEmployee_mainDepartmentId_String"/>
+                    <include name="patchEmployee_MentorId_NotExist"/>
+                    <include name="patchEmployee_MentorId_0"/>
+                    <include name="patchEmployee_MentorId_BigNumber"/>
+                    <include name="patchEmployee_MentorId_String"/>
+                </methods>
+            </class>
+            <class name="Tests.POST.CreateContactsEmployee">
+                <methods>
+                    <include name="newContact"/>
+                    <include name="testSchema"/>
+                    <include name="newContactPhoneString"/>
+                    <include name="newContactPhoneDouble"/>
+                    <include name="newContactPhoneNull"/>
+                    <include name="newContactPhone16"/>
+                    <include name="newContactPhone17"/>
+                    <include name="errorPhoneString"/>
+                    <include name="newContactTelegramDouble"/>
+                    <include name="newContactTelegramNull"/>
+                    <include name="newContactTelegram101Symbols"/>
+                </methods>
+            </class>
+            <class name="Tests.POST.CreateEmployeeDateTests">
+                <methods>
+                    <include name="createEmployeeBirthDateInFuture"/>
+                    <include name="createEmployeeBirthDateNull"/>
+                    <include name="createEmployeeBirthDateNumber"/>
+                    <include name="createEmployeeEmploymentDateNull"/>
+                    <include name="createEmployeeEmploymentDateNumber"/>
+                    <include name="createEmployeeDismissalDateExist"/>
+                </methods>
+            </class>
+            <class name="Tests.POST.CreateEmployeeNameTests">
+                <methods>
+                    <include name="createEmployeeNameNull"/>
+                    <include name="createEmployeeNameBlank"/>
+                    <include name="createEmployeeName255"/>
+                    <include name="createEmployeeName256"/>
+                    <include name="createEmployeeSurnameNull"/>
+                    <include name="createEmployeeSurename255"/>
+                    <include name="createEmployeeSurename256"/>
+                    <include name="createEmployeeMiddleNameNull"/>
+                    <include name="createEmployeeMiddleNameEmpty"/>
+                    <include name="createEmployeeMiddleName255"/>
+                    <include name="createEmployeeMiddleName256"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
