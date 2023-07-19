@@ -23,11 +23,13 @@ public class PatchEmployeeDateTests extends Specifications {
      * Дата увольнения - ранее даты приема на работу
      */
     @Test (description = "Заведен BUG - Дата увольнения - ранее даты приема на работу")
-    public void createEmployeeDismissalDateInPast() {
+    public void createEmployee_DismissalDate_In_Past() {
         installSpecification(requestSpec(URL), specResponseError400());
 
-        CreateNewEmployeeRequest bodyRequest = CreateNewEmployeeRequest.createEmployee("TestName", "NewSurename", "Test", "26.08.2000", "26.08.2023", "30.05.2023", "http://ava.jpg", "Its me", "Crimea, Yalta, 298600", 1, 2, 2, 2, 3, 2, 2, 2, 3);
-        String errorText = ErrorResponse.patchEmployeeError(URL, token, bodyRequest, employeeID).getDescription();
+            // дата увольнения ранее даты приема на работу.
+        String requestBody = WorkMethods.RequestBodyPatchStr("dismissalDate", "01.01.2022");
+        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
+
         System.out.println(errorText);
         Assert.assertTrue(errorText.contains("добавления или обновления записи в бд"), "Текст ошибки не получен или не совпадает");
     }
@@ -37,10 +39,12 @@ public class PatchEmployeeDateTests extends Specifications {
      * BUG -
      */
     @Test (description = "BUG - дата увольнения - число, заведен баг, так как нет ошибки")
-    public void createEmployeeEmploymentDateNumber() {
+    public void createEmployee_DismissalDate_Number() {
         installSpecification(requestSpec(URL), specResponseError400());
-        CreateNewEmployeeRequest bodyRequest = CreateNewEmployeeRequest.createEmployee("TestName", "NewSurename", "Test", "26.08.2000", GetDate.dateToday(), GetDate.dateYesterday(), "http://ava.jpg", "Its me", "Crimea, Yalta, 298600", 1, 2, 2, 2, 3, 2, 2, 2, 3);
-        String errorText = ErrorResponse.createEmployeeError(URL, token, bodyRequest).getDescription();
+
+        String requestBody = WorkMethods.RequestBodyPatchInt("dismissalDate", 123);
+        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
+
         System.out.println(errorText);
         Assert.assertTrue(errorText.contains("добавления или обновления записи в бд"), "Текст ошибки не получен или не совпадает");
     }
@@ -48,22 +52,67 @@ public class PatchEmployeeDateTests extends Specifications {
     /**
      * Дата увольнения на работу String
      */
-    @Test (description = "BUG - дата увольнения - String-text, заведен баг, так как нет ошибки")
-    public void createEmployeeEmploymentDateText() {
+    @Test
+    public void createEmployee_DismissalDate_String() {
         installSpecification(requestSpec(URL), specResponseError400());
         String text = StringGenerate.RandomString(5);
-        CreateNewEmployeeRequest bodyRequest = CreateNewEmployeeRequest.createEmployee("TestName", "NewSurename", "Test", "26.08.2000", GetDate.dateToday(), text, "http://ava.jpg", "Its me", "Crimea, Yalta, 298600", 1, 2, 2, 2, 3, 2, 2, 2, 3);
-        String errorText = ErrorResponse.createEmployeeError(URL, token, bodyRequest).getDescription();
+
+        String requestBody = WorkMethods.RequestBodyPatchStr("dismissalDate", text);
+        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
+
         System.out.println(errorText);
         Assert.assertEquals(errorText, "Text '" + text + "' could not be parsed at index 0", "Текст ошибки не получен или не совпадает");
     }
+
+    /**
+     * Дата увольнения на работу Boolean
+     */
+    @Test
+    public void createEmployee_DismissalDate_Boolean() {
+        installSpecification(requestSpec(URL), specResponseError400());
+
+        String requestBody = WorkMethods.RequestBodyPatchBoolean("dismissalDate", false);
+        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
+        System.out.println(errorText);
+        Assert.assertTrue(errorText.contains("Expected array or string."), "Текст ошибки не получен или не совпадает");
+    }
+
+    /**
+     * Дата увольнения на работу Object
+     */
+    @Test
+    public void createEmployee_DismissalDate_Object() {
+        installSpecification(requestSpec(URL), specResponseError400());
+
+        String requestBody = "{\n" + "\"dismissalDate\"" + " : " + "{\"Name\": \"text\"}" + "\n}";
+        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
+        System.out.println(errorText);
+        Assert.assertTrue(errorText.contains("Cannot deserialize value of type `java.time.LocalDate` from Object value"), "Текст ошибки не получен или не совпадает");
+    }
+
+    /**
+     * Дата увольнения на работу Array
+     */
+    @Test
+    public void createEmployee_DismissalDate_Array() {
+        installSpecification(requestSpec(URL), specResponseError400());
+
+        String requestBody = "{\n" + "\"dismissalDate\"" + " : " + "[{\"Name\": \"text\"}]" + "\n}";
+        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
+        System.out.println(errorText);
+        Assert.assertTrue(errorText.contains("Unexpected token (START_OBJECT) within Array"), "Текст ошибки не получен или не совпадает");
+    }
+
+
+
+
 
     //----------- постусловия ---------- очистка БД от тестовых данных-----------------
 
     @BeforeClass
     public void createEmployeeForTests() {
         installSpecification(requestSpec(URL), specResponseOK201());
-        CreateNewEmployeeRequest bodyRequest = CreateNewEmployeeRequest.createEmployee("TestEmployee", "TestEmployee", "TestEmployee", "26.08.1988", "03.03.2021", "", "http://ava_contact.jpg", "Its me_ contact", "Crimea, Yalta, 298600 - Contact", 1, 2, 2, 2, 3, 2, 2, 2, 3);
+        CreateNewEmployeeRequest bodyRequest = CreateNewEmployeeRequest.createEmployee("TestEmployee", "TestEmployee", "TestEmployee", "26.08.1988", "01.01.2023", "", "http://ava_contact.jpg", "Its me_ contact", "Crimea, Yalta, 298600 - Contact", 1, 2, 2, 2, 3, 2, 2, 2, 3);
         CreateNewEmployeeResponse createdEmployee = CreateNewEmployeeResponse.createEmployeeSuccess(URL, token, bodyRequest);
         employeeID = createdEmployee.getId();
         System.out.println("Создан сотрудник с ID: " + employeeID);

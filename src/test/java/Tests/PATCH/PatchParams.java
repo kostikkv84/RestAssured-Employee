@@ -5,6 +5,8 @@ import BaseClasses.WorkMethods;
 import PojoClasses.CreateNewEmployeePOJO.CreateNewEmployeeRequest;
 import PojoClasses.CreateNewEmployeePOJO.CreateNewEmployeeResponse;
 import PojoClasses.ErrorEmployeePOJO.ErrorResponse;
+import Tests.CreateEmployee;
+import Tests.POST.CreateEmployeeNameTests;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -17,60 +19,77 @@ public class PatchParams extends Specifications {
 
     Integer employeeID;
 
-    // ------------- MentorId ---------------------
+    //----------- avatar ------------------------------------------------------
+
     /**
-     * MentorId - не существует
+     * Avatar - передается типом Integer
      */
     @Test
-    public void patchEmployee_mainDepartmentId_NotExist() {
-        installSpecification(requestSpec(URL), specResponseError404());
+    public void patchEmployee_Avatar_Integer() {
+        installSpecification(requestSpec(URL), specResponseOK200());
+        Integer number = Integer.parseInt(WorkMethods.RandomNumber(5));
+        String requestBody = WorkMethods.RequestBodyPatchInt("avatar", number);
 
-        String requestBody = WorkMethods.RequestBodyPatchInt("mainDepartmentId", Integer.parseInt(WorkMethods.RandomNumber(4)));
-        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
-        System.out.println("Получена ошибка: " + errorText);
-        Assert.assertTrue(errorText.contains("Department not found, id: "), "Текст ошибки не получен или не совпадает");
+        String avatar = CreateNewEmployeeResponse.patchemployeesuccess(URL, token, requestBody, employeeID).getAvatar();
+        System.out.println("Аватар изменяется на : " + avatar);
+        Assert.assertEquals(avatar, String.valueOf(number), "Аватар в виде числа не получен");
     }
 
     /**
-     * MentorId - равно 0
+     * Avatar - очень большое количество символов! Заведен БАГ!
      */
-    @Test
-    public void patchEmployee_mainDepartmentId_0() {
-        installSpecification(requestSpec(URL), specResponseError404());
-        String requestBody = WorkMethods.RequestBodyPatchInt("mainDepartmentId", 0);
+    @Test (description = "BUG - на Avatar нет ограничения на количество символов в аватаре")
+    public void patchEmployee_Avatar_BigString() {
+        installSpecification(requestSpec(URL), specResponseError400());
+        String text = WorkMethods.RandomString(100000);
+        String requestBody = WorkMethods.RequestBodyPatchStr("avatar", text);
+
         String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
-        System.out.println("Получена ошибка: " + errorText);
-        Assert.assertEquals(errorText,"Department not found, id: 0", "Текст ошибки не получен или не совпадает");
+        System.out.println("Получена ошибка : " + errorText);
+        Assert.assertEquals(errorText, "Max length avatar cant be over 4000 symbols", "Аватар содержит больше допустимого количества символов");
     }
 
     /**
-     * MentorId - большое число
+     * Avatar - значение передается с типом Boolean
      */
     @Test
-    public void patchEmployee_mainDepartmentId_BigNumber() {
+    public void patchEmployee_Avatar_Boolean() {
+        installSpecification(requestSpec(URL), specResponseOK200());
+
+        String requestBody = WorkMethods.RequestBodyPatchBoolean("avatar", true);
+
+        String avatar = CreateNewEmployeeResponse.patchemployeesuccess(URL, token, requestBody, employeeID).getAvatar();
+        System.out.println("Аватар изменился на : " + avatar);
+        Assert.assertEquals(avatar, "true", "Значение параметра Avatar не изменилось");
+    }
+
+    /**
+     * Avatar - значение передается с типом Object
+     */
+    @Test
+    public void patchEmployee_Avatar_Object() {
         installSpecification(requestSpec(URL), specResponseError400());
 
-        BigInteger number = new BigInteger("45646589879865413258");
-        String requestBody = WorkMethods.RequestBodyPatchBigInt("mainDepartmentId", number);
+        String requestBody = "{\n" + "\"avatar\"" + " : " + "{\"Name\": \"text\"}" + "\n}";
         String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
-
-        System.out.println("Получена ошибка: " + errorText);
-        Assert.assertTrue(errorText.contains("out of range of long"), "Текст ошибки не получен или не совпадает");
+        System.out.println("Получена ошибка : " + errorText);
+        Assert.assertTrue(errorText.contains("Cannot deserialize value of type `java.lang.String` from Object value"), "Ошибка в параметре аватар при отправке Object не получена");
     }
 
     /**
-     * MentorId - передается типом String
+     * Avatar - значение передается с типом Array
      */
     @Test
-    public void patchEmployee_mainDepartmentId_String() {
+    public void patchEmployee_Avatar_Array() {
         installSpecification(requestSpec(URL), specResponseError400());
-        String requestBody = WorkMethods.RequestBodyPatchStr("mainDepartmentId", WorkMethods.RandomString(5));
+
+        String requestBody = "{\n" + "\"mentorId\"" + " : " + "[{\"Name\": \"text\"}]" + "\n}";
         String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
-        System.out.println("Получена ошибка: " + errorText);
-        Assert.assertTrue(errorText.contains("Cannot deserialize value of type `java.lang.Long` from String"), "Текст ошибки не получен или не совпадает");
+        System.out.println("Получена ошибка : " + errorText);
+        Assert.assertTrue(errorText.contains("Cannot deserialize value of type `java.lang.Long` from Array value"), "Ошибка в параметре аватар при отправке Object не получена");
     }
 
-    //----------- MainDepartmentId ----------------------------------------------------
+    //----------- MentorId ----------------------------------------------------
 
     /**
      * MentorId - не существует
@@ -122,6 +141,137 @@ public class PatchParams extends Specifications {
         System.out.println("Получена ошибка: " + errorText);
         Assert.assertTrue(errorText.contains("Cannot deserialize value of type `java.lang.Long` from String"), "Текст ошибки не получен или не совпадает");
     }
+
+    /**
+     * MentorId - передается типом Boolean
+     */
+    @Test
+    public void patchEmployee_MentorId_Boolean() {
+        installSpecification(requestSpec(URL), specResponseError400());
+        String requestBody = WorkMethods.RequestBodyPatchBoolean("mentorId", true);
+        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
+        System.out.println("Получена ошибка: " + errorText);
+        Assert.assertTrue(errorText.contains("Cannot deserialize value of type `java.lang.Long` from Boolean value"), "Текст ошибки не получен или не совпадает");
+    }
+
+    /**
+     * MentorId - передается типом Object
+     */
+    @Test
+    public void patchEmployee_MentorId_Object() {
+        installSpecification(requestSpec(URL), specResponseError400());
+        String requestBody = "{\n" + "\"mentorId\"" + " : " + "{\"Name\": \"text\"}" + "\n}";
+        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
+        System.out.println("Получена ошибка: " + errorText);
+        Assert.assertTrue(errorText.contains("Cannot deserialize value of type `java.lang.Long` from Object value"), "Текст ошибки не получен или не совпадает");
+    }
+
+    /**
+     * MentorId - передается типом Array
+     */
+    @Test
+    public void patchEmployee_MentorId_Array() {
+        installSpecification(requestSpec(URL), specResponseError400());
+        String requestBody = "{\n" + "\"mentorId\"" + " : " + "[{\"Name\": \"text\"}]" + "\n}";
+        System.out.println(requestBody);
+        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
+        System.out.println("Получена ошибка: " + errorText);
+        Assert.assertTrue(errorText.contains("Cannot deserialize value of type `java.lang.Long` from Array value"), "Текст ошибки не получен или не совпадает");
+    }
+
+
+    // ------------- mainDepartmentId ---------------------
+    /**
+     * mainDepartmentId - не существует
+     */
+    @Test
+    public void patchEmployee_mainDepartmentId_NotExist() {
+        installSpecification(requestSpec(URL), specResponseError404());
+
+        String requestBody = WorkMethods.RequestBodyPatchInt("mainDepartmentId", Integer.parseInt(WorkMethods.RandomNumber(4)));
+        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
+        System.out.println("Получена ошибка: " + errorText);
+        Assert.assertTrue(errorText.contains("Department not found, id: "), "Текст ошибки не получен или не совпадает");
+    }
+
+    /**
+     * mainDepartmentId - равно 0
+     */
+    @Test
+    public void patchEmployee_mainDepartmentId_0() {
+        installSpecification(requestSpec(URL), specResponseError404());
+        String requestBody = WorkMethods.RequestBodyPatchInt("mainDepartmentId", 0);
+        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
+        System.out.println("Получена ошибка: " + errorText);
+        Assert.assertEquals(errorText,"Department not found, id: 0", "Текст ошибки не получен или не совпадает");
+    }
+
+    /**
+     * mainDepartmentId - большое число
+     */
+    @Test
+    public void patchEmployee_mainDepartmentId_BigNumber() {
+        installSpecification(requestSpec(URL), specResponseError400());
+
+        BigInteger number = new BigInteger("45646589879865413258");
+        String requestBody = WorkMethods.RequestBodyPatchBigInt("mainDepartmentId", number);
+        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
+
+        System.out.println("Получена ошибка: " + errorText);
+        Assert.assertTrue(errorText.contains("out of range of long"), "Текст ошибки не получен или не совпадает");
+    }
+
+    /**
+     * mainDepartmentId - передается типом String
+     */
+    @Test
+    public void patchEmployee_mainDepartmentId_String() {
+        installSpecification(requestSpec(URL), specResponseError400());
+        String requestBody = WorkMethods.RequestBodyPatchStr("mainDepartmentId", WorkMethods.RandomString(5));
+        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
+        System.out.println("Получена ошибка: " + errorText);
+        Assert.assertTrue(errorText.contains("Cannot deserialize value of type `java.lang.Long` from String"), "Текст ошибки не получен или не совпадает");
+    }
+
+    /**
+     * MentorId - передается типом Boolean
+     */
+    @Test
+    public void patchEmployee_mainDepartmentId_Boolean() {
+        installSpecification(requestSpec(URL), specResponseError400());
+        String requestBody = WorkMethods.RequestBodyPatchBoolean("mainDepartmentId", true);
+        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
+        System.out.println("Получена ошибка: " + errorText);
+        Assert.assertTrue(errorText.contains("Cannot deserialize value of type `java.lang.Long` from Boolean value"), "Текст ошибки не получен или не совпадает");
+    }
+
+    /**
+     * MentorId - передается типом Object
+     */
+    @Test
+    public void patchEmployee_mainDepartmentId_Object() {
+        installSpecification(requestSpec(URL), specResponseError400());
+        String requestBody = "{\n" + "\"mainDepartmentId\"" + " : " + "{\"Name\": \"text\"}" + "\n}";
+        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
+        System.out.println("Получена ошибка: " + errorText);
+        Assert.assertTrue(errorText.contains("Cannot deserialize value of type `java.lang.Long` from Object value"), "Текст ошибки не получен или не совпадает");
+    }
+
+    /**
+     * MentorId - передается типом Array
+     */
+    @Test
+    public void patchEmployee_mainDepartmentId_Array() {
+        installSpecification(requestSpec(URL), specResponseError400());
+        String requestBody = "{\n" + "\"mainDepartmentId\"" + " : " + "[{\"Name\": \"text\"}]" + "\n}";
+        System.out.println(requestBody);
+        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
+        System.out.println("Получена ошибка: " + errorText);
+        Assert.assertTrue(errorText.contains("Cannot deserialize value of type `java.lang.Long` from Array value"), "Текст ошибки не получен или не совпадает");
+    }
+
+
+
 
 
     //----------- постусловия ---------- очистка БД от тестовых данных-----------------

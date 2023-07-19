@@ -248,4 +248,10 @@ public class WorkMethods extends Specifications {
         return requestBody;
     }
 
+    public static String RequestBodyPatchBoolean(String key, Boolean value){
+        String requestBody = "{\n" + "    \"" + key + "\"" + " : " + value + "\n}";
+        return requestBody;
+    }
+
+
 }

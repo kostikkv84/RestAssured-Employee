@@ -105,7 +105,7 @@ public class PatchEmployee_Success_Admin extends Specifications {
     }
 
     /**
-     * Изменение ссылки на аватар
+     * Изменение ссылки на аватар - Avatar
      */
     @Test
     public void changeAvatarPatch() {
@@ -120,7 +120,7 @@ public class PatchEmployee_Success_Admin extends Specifications {
     }
 
     /**
-     * Изменение комментария
+     * Изменение комментария - Comment
      */
     @Test
     public void changeCommentPatch() {
@@ -135,7 +135,7 @@ public class PatchEmployee_Success_Admin extends Specifications {
     }
 
     /**
-     * Изменение адреса
+     * Изменение адреса - fullAddress
      */
     @Test
     public void changeFullAddressPatch() {
@@ -150,7 +150,7 @@ public class PatchEmployee_Success_Admin extends Specifications {
     }
 
     /**
-     * Изменение ментора по Id
+     * Изменение ментора по Id - mentorId
      */
     @Test
     public void changeMentorIdPatch() {
@@ -166,7 +166,7 @@ public class PatchEmployee_Success_Admin extends Specifications {
     }
 
     /**
-     * Изменение формата работы по Id
+     * Изменение формата работы по Id - workFormatId
      */
     @Test
     public void changeWorkFormatIdPatch() {
@@ -185,7 +185,7 @@ public class PatchEmployee_Success_Admin extends Specifications {
     }
 
     /**
-     * Изменение типа должности по Id
+     * Изменение типа должности по Id - employmentTypeId
      */
     @Test
     public void changeEmploymentTypeIdPatch() {
@@ -200,7 +200,7 @@ public class PatchEmployee_Success_Admin extends Specifications {
     }
 
     /**
-     * Изменение типа позиции по Id
+     * Изменение типа позиции по Id - positionId
      */
     @Test
     public void changePositionIdPatch() {
@@ -218,7 +218,7 @@ public class PatchEmployee_Success_Admin extends Specifications {
     }
 
     /**
-     * Изменение биографии по Id
+     * Изменение биографии по Id - curriculumVitaeId
      */
     @Test
     public void changeCurriculumVitaeIdPatch() {
@@ -233,7 +233,7 @@ public class PatchEmployee_Success_Admin extends Specifications {
     }
 
     /**
-     * Изменение грейда по Id
+     * Изменение грейда по Id - gradeDictId
      */
     @Test
     public void changeGradeIdPatch() {
@@ -251,7 +251,7 @@ public class PatchEmployee_Success_Admin extends Specifications {
     }
 
     /**
-     * Изменение должности по Id
+     * Изменение должности по Id - employeeStatusId
      */
     @Test
     public void changeEmployeeStatusIdPatch() {
@@ -269,7 +269,7 @@ public class PatchEmployee_Success_Admin extends Specifications {
     }
 
     /**
-     * Изменение локации по Id
+     * Изменение локации по Id - locationId
      */
     @Test
     public void changeLocationIdPatch() {
@@ -287,7 +287,7 @@ public class PatchEmployee_Success_Admin extends Specifications {
     }
 
     /**
-     * Изменение локации по Id
+     * Изменение локации по Id - mainDepartmentId
      */
     @Test
     public void changeDepartmentIdPatch() {

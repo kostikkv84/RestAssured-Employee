@@ -214,7 +214,7 @@ public class CreateContactsEmployee extends Specifications {
     /**
      * BUG - Telegram - Double - дубль, уже существует в другой записи
      */
-    @Test (description = "Error create Contact = Phone - Double - Заведен баг, так как дубль на телефон не отрабатывает!")
+    @Test //(description = "Error create Contact = Phone - Double - Заведен баг, так как дубль на телефон не отрабатывает!")
     public void newContactTelegramDouble() {
         String phone = WorkMethods.RandomString(10);
         String telegram = WorkMethods.RandomString(50);

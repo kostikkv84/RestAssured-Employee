@@ -171,7 +171,7 @@ public class CreateEmployeeNameTests extends Specifications {
 
     @Test
     public void createEmployeeMiddleNameEmpty() {
-        installSpecification(requestSpec(URL), specResponseOK201());
+        installSpecification(requestSpec(URL), specResponseError400());
 
         CreateNewEmployeeResponse response = new CreateNewEmployeeResponse();
 
@@ -195,9 +195,9 @@ public class CreateEmployeeNameTests extends Specifications {
                 .locationId(2)
                 .mainDepartmentId(2).build();
 
-        String name = response.createEmployeeSuccess(URL, token, requestBody).getName();
-        System.out.println(name);
-        Assert.assertEquals(name, "Test");
+        String errorText = ErrorResponse.createEmployeeErrorList(URL, token, requestBody).get(0).getDescription();
+        System.out.println(errorText);
+        Assert.assertEquals(errorText, "Поле middleName: если поле не null, то должно быть не пустым", "Ожидаемая ошибка не получена !");
     }
 
     /**
