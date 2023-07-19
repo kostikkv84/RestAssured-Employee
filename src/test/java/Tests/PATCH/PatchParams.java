@@ -1,12 +1,9 @@
 package Tests.PATCH;
 
-import BaseClasses.StringGenerate;
 import BaseClasses.WorkMethods;
 import PojoClasses.CreateNewEmployeePOJO.CreateNewEmployeeRequest;
 import PojoClasses.CreateNewEmployeePOJO.CreateNewEmployeeResponse;
 import PojoClasses.ErrorEmployeePOJO.ErrorResponse;
-import Tests.CreateEmployee;
-import Tests.POST.CreateEmployeeNameTests;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -38,7 +35,7 @@ public class PatchParams extends Specifications {
     /**
      * Avatar - очень большое количество символов! Заведен БАГ!
      */
-    @Test (description = "BUG - на Avatar нет ограничения на количество символов в аватаре")
+    @Test(description = "BUG - на Avatar нет ограничения на количество символов в аватаре")
     public void patchEmployee_Avatar_BigString() {
         installSpecification(requestSpec(URL), specResponseError400());
         String text = WorkMethods.RandomString(100000);
@@ -112,7 +109,7 @@ public class PatchParams extends Specifications {
         String requestBody = WorkMethods.RequestBodyPatchInt("mentorId", 0);
         String errorText = ErrorResponse.patchEmployeeErrorList(URL, token, requestBody, employeeID).get(0).getDescription();
         System.out.println("Получена ошибка: " + errorText);
-        Assert.assertEquals(errorText,"Поле mentorId: must be greater than 0", "Текст ошибки не получен или не совпадает");
+        Assert.assertEquals(errorText, "Поле mentorId: must be greater than 0", "Текст ошибки не получен или не совпадает");
     }
 
     /**
@@ -181,6 +178,7 @@ public class PatchParams extends Specifications {
 
 
     // ------------- mainDepartmentId ---------------------
+
     /**
      * mainDepartmentId - не существует
      */
@@ -203,7 +201,7 @@ public class PatchParams extends Specifications {
         String requestBody = WorkMethods.RequestBodyPatchInt("mainDepartmentId", 0);
         String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
         System.out.println("Получена ошибка: " + errorText);
-        Assert.assertEquals(errorText,"Department not found, id: 0", "Текст ошибки не получен или не совпадает");
+        Assert.assertEquals(errorText, "Department not found, id: 0", "Текст ошибки не получен или не совпадает");
     }
 
     /**
@@ -269,9 +267,6 @@ public class PatchParams extends Specifications {
         System.out.println("Получена ошибка: " + errorText);
         Assert.assertTrue(errorText.contains("Cannot deserialize value of type `java.lang.Long` from Array value"), "Текст ошибки не получен или не совпадает");
     }
-
-
-
 
 
     //----------- постусловия ---------- очистка БД от тестовых данных-----------------
