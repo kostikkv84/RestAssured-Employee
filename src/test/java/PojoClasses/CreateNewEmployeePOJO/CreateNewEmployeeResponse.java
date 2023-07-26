@@ -1,10 +1,15 @@
 package PojoClasses.CreateNewEmployeePOJO;
 
 import PojoClasses.GetEmployeeResponsePOJO.*;
+import io.restassured.RestAssured;
 import lombok.Getter;
 import lombok.Setter;
+import org.hamcrest.Matchers;
 
 import static io.restassured.RestAssured.given;
+import static java.util.function.Predicate.not;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
 
 @Setter
 @Getter
@@ -73,7 +78,7 @@ public class CreateNewEmployeeResponse {
     }
 
     /**
-     * Отправка запроса на создание сотрудника
+     * Отправка запроса на изменение записи сотрудника
      */
     public static CreateNewEmployeeResponse patchemployeesuccess(String url, String token, String body, Integer id) {
 
@@ -86,5 +91,20 @@ public class CreateNewEmployeeResponse {
                 .log().all()
                 .extract().body().as(CreateNewEmployeeResponse.class);
         return patchEmployee;
+    }
+
+    /**
+     * Отправка запроса на изменение записи сотрудника от пользователя БЕЗ ПРАВ на это действие!
+     */
+    public static Boolean postEmployeeSuccess403(String url, String token, String body, Integer id) {
+       RestAssured.given()
+                .header("Authorization", "Bearer " + token)
+                .body(body)
+                .when()
+                .patch(url + "/employee/" + id)
+                .then()
+           //    .body("", Matchers.blankOrNullString());
+               .statusCode(403);
+        return true;
     }
 }

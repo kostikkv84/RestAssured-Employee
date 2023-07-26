@@ -86,6 +86,176 @@ public class PatchParams extends Specifications {
         Assert.assertTrue(errorText.contains("Cannot deserialize value of type `java.lang.Long` from Array value"), "Ошибка в параметре аватар при отправке Object не получена");
     }
 
+    //----------- Comment -----------------------------------------------------
+    /**
+     * Avatar - передается типом Integer
+     */
+    @Test
+    public void patchEmployee_Comment_Integer() {
+        installSpecification(requestSpec(URL), specResponseOK200());
+
+        Integer number = Integer.parseInt(WorkMethods.RandomNumber(5));
+
+        String requestBody = WorkMethods.RequestBodyPatchInt("comment", number);
+
+        String comment = CreateNewEmployeeResponse.patchemployeesuccess(URL, token, requestBody, employeeID).getComment();
+
+        System.out.println("Комментарий изменяется на : " + comment);
+        Assert.assertEquals(comment, String.valueOf(number), "Аватар в виде числа не получен");
+    }
+
+    /**
+     * Comment - 4001 символ
+     */
+    @Test
+    public void patchEmployee_Comment_4001() {
+        installSpecification(requestSpec(URL), specResponseError400());
+        String text = WorkMethods.RandomString(4001);
+        String requestBody = WorkMethods.RequestBodyPatchStr("comment", text);
+
+        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDetails();
+        System.out.println("Получена ошибка : " + errorText);
+        Assert.assertEquals(errorText, "ERROR: value too long for type character varying(4000)", "Ошибка не получена");
+    }
+
+    /**
+     * Comment - 4000 симвов
+     */
+    @Test
+    public void patchEmployee_Comment_4000() {
+        installSpecification(requestSpec(URL), specResponseOK200());
+        String text = WorkMethods.RandomString(4000);
+        String requestBody = WorkMethods.RequestBodyPatchStr("comment", text);
+
+        String comment = CreateNewEmployeeResponse.patchemployeesuccess(URL, token, requestBody, employeeID).getComment();
+        System.out.println("Получен комментарий : " + comment);
+        Assert.assertEquals(comment, text, "Коммент не изменен на 4000 символов");
+    }
+
+    /**
+     * Comment - значение передается с типом Boolean
+     */
+    @Test
+    public void patchEmployee_Comment_Boolean() {
+        installSpecification(requestSpec(URL), specResponseOK200());
+
+        String requestBody = WorkMethods.RequestBodyPatchBoolean("comment", true);
+
+        String comment = CreateNewEmployeeResponse.patchemployeesuccess(URL, token, requestBody, employeeID).getAvatar();
+        System.out.println("Коммент изменился на : " + comment);
+        Assert.assertEquals(comment, "true", "Значение параметра Comment не изменилось");
+    }
+
+    /**
+     * Comment - значение передается с типом Object
+     */
+    @Test
+    public void patchEmployee_Comment_Object() {
+        installSpecification(requestSpec(URL), specResponseError400());
+
+        String requestBody = "{\n" + "\"comment\"" + " : " + "{\"Name\": \"text\"}" + "\n}";
+        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
+        System.out.println("Получена ошибка : " + errorText);
+        Assert.assertTrue(errorText.contains("Cannot deserialize value of type `java.lang.String` from Object value"), "Ошибка в параметре аватар при отправке Object не получена");
+    }
+
+    /**
+     * Comment - значение передается с типом Array
+     */
+    @Test
+    public void patchEmployee_Comment_Array() {
+        installSpecification(requestSpec(URL), specResponseError400());
+
+        String requestBody = "{\n" + "\"comment\"" + " : " + "[{\"Name\": \"text\"}]" + "\n}";
+        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
+        System.out.println("Получена ошибка : " + errorText);
+        Assert.assertTrue(errorText.contains("Cannot deserialize value of type `java.lang.String` from Array value"), "Ошибка в параметре аватар при отправке Object не получена");
+    }
+
+    //----------- FullAddress --------------------------------------------------
+
+    /**
+     * fullAddress - передается типом Integer
+     */
+    @Test
+    public void patchEmployee_fullAddress_Integer() {
+        installSpecification(requestSpec(URL), specResponseOK200());
+        Integer number = Integer.parseInt(WorkMethods.RandomNumber(5));
+        String requestBody = WorkMethods.RequestBodyPatchInt("fullAddress", number);
+
+        String fullAddress = CreateNewEmployeeResponse.patchemployeesuccess(URL, token, requestBody, employeeID).getFullAddress();
+        System.out.println("Адрес изменяется на : " + fullAddress);
+        Assert.assertEquals(fullAddress, String.valueOf(number), "Аватар в виде числа не получен");
+    }
+
+    /**
+     * fullAddress - 1001 символ
+     */
+    @Test
+    public void patchEmployee_fullAddress_1001() {
+        installSpecification(requestSpec(URL), specResponseError400());
+        String text = WorkMethods.RandomString(1001);
+        String requestBody = WorkMethods.RequestBodyPatchStr("fullAddress", text);
+
+        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDetails();
+        System.out.println("Получена ошибка : " + errorText);
+        Assert.assertEquals(errorText, "ERROR: value too long for type character varying(1000)", "Ошибка не получена");
+    }
+
+    /**
+     * fullAddress - 1000 симвов
+     */
+    @Test
+    public void patchEmployee_fullAddress_1000() {
+        installSpecification(requestSpec(URL), specResponseOK200());
+        String text = WorkMethods.RandomString(1000);
+        String requestBody = WorkMethods.RequestBodyPatchStr("fullAddress", text);
+
+        String fullAddress = CreateNewEmployeeResponse.patchemployeesuccess(URL, token, requestBody, employeeID).getComment();
+        System.out.println("Адрес изменен на: " + fullAddress);
+        Assert.assertEquals(fullAddress, text, "Адрес не изменен на 1000 символов");
+    }
+
+    /**
+     * fullAddress - значение передается с типом Boolean
+     */
+    @Test
+    public void patchEmployee_fullAddress_Boolean() {
+        installSpecification(requestSpec(URL), specResponseOK200());
+
+        String requestBody = WorkMethods.RequestBodyPatchBoolean("fullAddress", true);
+        String fullAddress = CreateNewEmployeeResponse.patchemployeesuccess(URL, token, requestBody, employeeID).getAvatar();
+        System.out.println("Адрес изменился на : " + fullAddress);
+        Assert.assertEquals(fullAddress, "true", "Значение параметра fullAddress не изменилось");
+    }
+
+
+    /**
+     * fullAddress - значение передается с типом Object
+     */
+    @Test
+    public void patchEmployee_fullAddress_Object() {
+        installSpecification(requestSpec(URL), specResponseError400());
+
+        String requestBody = "{\n" + "\"fullAddress\"" + " : " + "{\"Name\": \"123\"}" + "\n}";
+        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
+        System.out.println("Получена ошибка : " + errorText);
+        Assert.assertTrue(errorText.contains("Cannot deserialize value of type `java.lang.String` from Object value"), "Ошибка в параметре аватар при отправке Object не получена");
+    }
+
+    /**
+     * fullAddress - значение передается с типом Array
+     */
+    @Test
+    public void patchEmployee_fullAddress_Array() {
+        installSpecification(requestSpec(URL), specResponseError400());
+
+        String requestBody = "{\n" + "\"fullAddress\"" + " : " + "[{\"key\": \"text1\"}]" + "\n}";
+        String errorText = ErrorResponse.patchEmployeeErrorStr(URL, token, requestBody, employeeID).getDescription();
+        System.out.println("Получена ошибка : " + errorText);
+        Assert.assertTrue(errorText.contains("Cannot deserialize value of type `java.lang.String` from Array value"), "Ошибка в параметре аватар при отправке Object не получена");
+    }
+
     //----------- MentorId ----------------------------------------------------
 
     /**
