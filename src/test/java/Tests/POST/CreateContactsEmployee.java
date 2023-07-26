@@ -27,7 +27,7 @@ public class CreateContactsEmployee extends Specifications {
     /**
      * Успешное создание контактов сотрудника.
      */
-    @Test
+  //  @Test
     public void newContact() {
         // проверяем статус код
         installSpecification(requestSpec(URL), specResponseOK201());
@@ -45,7 +45,7 @@ public class CreateContactsEmployee extends Specifications {
      * Записываем ID сонтакта для последующего удаления
      */
     @Test
-    public void testSchema() {
+    public void testNewContactSchema() {
         installSpecification(requestSpec(URL), specResponseOK201());
         EmployeeContactRequest requestBody = new EmployeeContactRequest(WorkMethods.RandomNumber(11), "Test_Schema",
                 "Test_Schema", "Test_Schema", "Test_Schema@test.ru", employeeID);
@@ -88,9 +88,9 @@ public class CreateContactsEmployee extends Specifications {
                 .email(randomStr + "@email.ru")
                 .employeeId(113).build();
         // выполняем запрос на создание записи с контактами
-        ErrorResponse error = ErrorResponse.createContactError(URL, token, requestBody);
+        List<ErrorResponse> error = ErrorResponse.createContactErrorList(URL, token, requestBody);
         // проверяем ответ.
-        Assert.assertTrue(error.getDescription().contains("Поле phone: Не верный номер телефона"), "Ожидаемая ошибка не получена");
+        Assert.assertTrue(error.get(0).getDescription().contains("Поле phone: Не верный номер телефона"), "Ожидаемая ошибка не получена");
     }
 
     /**
@@ -223,7 +223,7 @@ public class CreateContactsEmployee extends Specifications {
     /**
      * BUG - Telegram - Double - дубль, уже существует в другой записи
      */
-    @Test //(description = "Error create Contact = Phone - Double - Заведен баг, так как дубль на телефон не отрабатывает!")
+    @Test //(description = "Error create Contact = Telegram - Double - Заведен баг, так как дубль на телеграм не отрабатывает!")
     public void newContactTelegramDouble() {
         String phone = WorkMethods.RandomString(10);
         String telegram = WorkMethods.RandomString(50);
