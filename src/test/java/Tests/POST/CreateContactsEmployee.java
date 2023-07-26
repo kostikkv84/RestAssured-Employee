@@ -17,8 +17,11 @@ import spec.Specifications;
 
 import java.util.List;
 
+import static io.restassured.RestAssured.given;
+
 public class CreateContactsEmployee extends Specifications {
     Integer employeeID;
+    Integer contactID;
     final String number = WorkMethods.RandomNumber(11);
 
     /**
@@ -39,14 +42,15 @@ public class CreateContactsEmployee extends Specifications {
 
     /**
      * Проверка схемы ответа, при создании нового контакта
+     * Записываем ID сонтакта для последующего удаления
      */
     @Test
     public void testSchema() {
         installSpecification(requestSpec(URL), specResponseOK201());
         EmployeeContactRequest requestBody = new EmployeeContactRequest(WorkMethods.RandomNumber(11), "Test_Schema",
-                "Test_Schema", "Test_Schema", "Test_Schema@test.ru", 75);
+                "Test_Schema", "Test_Schema", "Test_Schema@test.ru", employeeID);
         //EmployeeContactResponse.addContactSchemaTest(URL, token, requestBody);
-        RestAssured.given()
+        EmployeeContactResponse contact = given()
                 .header("Authorization", "Bearer " + Specifications.token)
                 .body(requestBody)
                 .when()
@@ -55,7 +59,12 @@ public class CreateContactsEmployee extends Specifications {
                 .log().all()
                 .assertThat()
                 .body("id", Matchers.notNullValue())
-                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("contactsSchema.json"));
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("contactsSchema.json"))
+                .extract().body().as(EmployeeContactResponse.class);
+        contactID = contact.getId();
+
+        System.out.println("ПОлучен СОНТАКТ с ID: " + contactID);
+
     }
 
     //-------------- Phone - Обработка ошибок создания контактов  -------------------------------
@@ -307,7 +316,8 @@ public class CreateContactsEmployee extends Specifications {
 
     @AfterClass
     public void cleanExtraContacts() {
-        WorkMethods.deleteExtraContacts(URL, token);
+        WorkMethods.deleteContactOnId(URL, token, contactID);
+      //  WorkMethods.deleteExtraContacts(URL, token);
     }
 
     @AfterClass

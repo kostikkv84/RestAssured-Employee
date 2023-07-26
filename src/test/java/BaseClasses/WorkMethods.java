@@ -75,7 +75,7 @@ public class WorkMethods extends Specifications {
                 .then()
                 //.log().all()
                 .extract().body().as(Root.class);
-        System.out.println(list.getContent().size());
+        System.out.println("Количество записей с сотрудниками всего: " + list.getContent().size());
 
         // Создаем список ID карточек сотрудников
         List<Integer> listID = list.getContent().stream().map(Content::getId).collect(Collectors.toList());
@@ -119,6 +119,20 @@ public class WorkMethods extends Specifications {
                 .extract();
     }
 
+    public static void deleteContactOnId(String url, String token, Integer id){
+        installSpecification(requestSpec(url), specResponseOK204());
+
+        given()
+                .header("Content-type", "application/json")
+                .header("Authorization", "Bearer "+token)
+                .when()
+                .delete(url+"/employee-contact/" + id)
+                .then()
+                .extract();
+
+        System.out.println("Удален контакт с ID: " + id);
+    }
+
     /**
      * Очистка лишних записей с контактами
      */
@@ -136,12 +150,16 @@ public class WorkMethods extends Specifications {
         List<Integer> listID = list.stream().map(EmployeeContactResponse::getId).collect(Collectors.toList());
         List<Integer> listToDelete = new ArrayList<>();
 
+
+
         // для безопасности, создадим отдельный список с ID на удаление сотрудников. Где ID больше 320
         for (int i=0;i<listID.size();i++) {
             if (listID.get(i)>20) {
                 listToDelete.add(listID.get(i));
             }
         }
+
+        System.out.println(listToDelete);
 
         for (int i=0;i<listToDelete.size();i++) {
             installSpecification(requestSpec(url), specResponseOK204());
@@ -212,7 +230,7 @@ public class WorkMethods extends Specifications {
         List<Integer> listID = response.stream().map(EmployeeStatusResponse::getId).collect(Collectors.toList());
         //   List<Integer> listToDelete = new ArrayList<>();
         // Выбираем, те, что больше 10 в список
-        List<Integer> listToDelete = listID.stream().filter(p -> p > 10).collect(Collectors.toList());
+        List<Integer> listToDelete = listID.stream().filter(p -> p > 11).collect(Collectors.toList());
         // List<EmployeeStatusResponse> list = response.stream().filter(p -> p.getId() > 10).collect(Collectors.toList());
 
         /**

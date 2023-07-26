@@ -26,7 +26,7 @@ public class GetEmployeeStatus_Tests extends Specifications {
                 .then().log().all()
                 .extract().body().jsonPath().getList("", EmployeeStatusResponse.class);
 
-        Assert.assertEquals(response.size(), 10, "Киличество типов статусов сотрудника больше или меньше 10!");
+        Assert.assertEquals(response.size(), 11, "Киличество типов статусов сотрудника больше или меньше 10!");
     }
 
     /**
@@ -42,7 +42,7 @@ public class GetEmployeeStatus_Tests extends Specifications {
                 .then().log().all()
                 .extract().body().jsonPath().getList("", EmployeeStatusResponse.class);
 
-        Assert.assertEquals(response.size(), 10, "Киличество типов статусов сотрудника больше или меньше 10!");
+        Assert.assertEquals(response.size(), 11, "Киличество типов статусов сотрудника больше или меньше 11!");
     }
 
     /**

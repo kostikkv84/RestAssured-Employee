@@ -211,7 +211,7 @@ public class PatchParams extends Specifications {
         String text = WorkMethods.RandomString(1000);
         String requestBody = WorkMethods.RequestBodyPatchStr("fullAddress", text);
 
-        String fullAddress = CreateNewEmployeeResponse.patchemployeesuccess(URL, token, requestBody, employeeID).getComment();
+        String fullAddress = CreateNewEmployeeResponse.patchemployeesuccess(URL, token, requestBody, employeeID).getFullAddress();
         System.out.println("Адрес изменен на: " + fullAddress);
         Assert.assertEquals(fullAddress, text, "Адрес не изменен на 1000 символов");
     }

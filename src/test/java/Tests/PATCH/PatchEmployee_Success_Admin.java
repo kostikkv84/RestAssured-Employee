@@ -181,7 +181,7 @@ public class PatchEmployee_Success_Admin extends Specifications {
         System.out.println("Value формата работы изменено на: " + formatValue);
         // сравниваем результат с ожидаемым.
         Assert.assertEquals(formatId, 2, "WorkFormatId не изменился");
-        Assert.assertEquals(formatValue, "Удалённо", "WorkFormatValue не изменился");
+        Assert.assertEquals(formatValue, "Удаленный", "WorkFormatValue не изменился");
     }
 
     /**
